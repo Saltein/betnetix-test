@@ -1,0 +1,32 @@
+import type { FunctionComponent } from "react";
+import { TextField, Input, Label, FieldError } from "@heroui/react";
+import s from "./DefaultInput.module.scss";
+
+interface DefaultInputProps {
+    name: string;
+    type: "email" | "text" | "search" | "url" | "tel" | "password";
+    validate?: (value: string) => string | null;
+    label: string;
+    placeholder: string;
+}
+
+export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
+    name,
+    type,
+    validate,
+    label,
+    placeholder,
+}) => {
+    return (
+        <TextField
+            name={name}
+            type={type}
+            validate={validate ? validate : undefined}
+            className={s.textField}
+        >
+            <Label className={s.label}>{label}</Label>
+            <Input className={s.input} placeholder={placeholder} />
+            <FieldError className={s.error} />
+        </TextField>
+    );
+};
