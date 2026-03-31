@@ -1,0 +1,34 @@
+@use "../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    height: 100vh;
+    display: flex;
+    background-color: $color-background;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xxl;
+    background-color: $color-surface;
+    box-shadow: $shadows-12;
+    border-radius: $radius-lg;
+    padding: 60px;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    height: 25px;
+    width: 100px;
+    color: $color-primary;
+}
+
+.titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xl;
+}

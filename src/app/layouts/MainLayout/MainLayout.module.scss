@@ -1,0 +1,7 @@
+@use "../../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    height: 100vh;
+    display: flex;
+    background-color: $color-background;
+}
