@@ -1,0 +1,18 @@
+@use "../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    display: flex;
+    background-color: $color-surface;
+    border-radius: 0 0 20px 20px;
+    height: 65px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    box-shadow: $shadow-0;
+}
+
+.icon {
+    width: 100px;
+    height: 25px;
+    color: $color-primary;
+}

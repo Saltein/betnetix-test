@@ -1,0 +1,13 @@
+@use "../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: $color-surface;
+    border-radius: 20px 20px 0 0;
+    flex: 1;
+    width: 100%;
+    box-shadow: $shadow-0;
+    padding: 24px 20px;
+    gap: 20px;
+}

@@ -8,6 +8,7 @@ interface DefaultInputProps {
     validate?: (value: string) => string | null;
     label: string;
     placeholder: string;
+    isMobile?: boolean;
 }
 
 export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
@@ -16,6 +17,7 @@ export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
     validate,
     label,
     placeholder,
+    isMobile,
 }) => {
     return (
         <TextField
@@ -24,8 +26,13 @@ export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
             validate={validate ? validate : undefined}
             className={s.textField}
         >
-            <Label className={s.label}>{label}</Label>
-            <Input className={s.input} placeholder={placeholder} />
+            <Label className={`${s.label}`}>
+                {label}
+            </Label>
+            <Input
+                className={`${s.input} ${isMobile ? s.inputMobile : ""}`}
+                placeholder={placeholder}
+            />
             <FieldError className={s.error} />
         </TextField>
     );
