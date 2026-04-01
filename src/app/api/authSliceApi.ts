@@ -47,3 +47,12 @@ export const authApi = createApi({
         }),
     }),
 });
+
+export const {
+    useLoginMutation,
+    useGetCurrentUserQuery,
+    useRefreshSessionMutation,
+} = authApi;
+
+export const authReducer = authApi.reducer;
+export const authMiddleware = authApi.middleware;

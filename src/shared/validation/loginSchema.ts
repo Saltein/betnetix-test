@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-    email: z
+    login: z
         .string()
-        .min(1, "Email обязателен")
-        .pipe(z.email("Некорректный email")),
+        .min(4, "Минимум 8 символов")
+        .max(32, "Максимум 32 символа"),
 
     newPassword: z
         .string()

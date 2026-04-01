@@ -2,9 +2,9 @@ import { Navigate, Outlet } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export const ProtectedRoute = () => {
-    const token = Cookies.get("token");
+    const accessToken = Cookies.get("accessToken");
 
-    if (!token) {
+    if (!accessToken) {
         return <Navigate to="/login" replace />;
     }
 

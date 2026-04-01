@@ -13,10 +13,10 @@ export const LoginInputs: FunctionComponent<LoginInputsProps> = ({
     return (
         <div className={`${s.inputs} ${isMobile ? s.inputsMobile : ""}`}>
             <DefaultInput
-                name="name"
-                type="email"
+                name="username"
+                type="text"
                 validate={(value) => {
-                    const result = loginSchema.shape.email.safeParse(value);
+                    const result = loginSchema.shape.login.safeParse(value);
 
                     if (!result.success) {
                         return result.error.issues[0]?.message;
@@ -25,7 +25,7 @@ export const LoginInputs: FunctionComponent<LoginInputsProps> = ({
                     return null;
                 }}
                 label="Имя пользователя"
-                placeholder="admin@example.com"
+                placeholder="Admin"
                 isMobile={isMobile}
             />
             <DefaultInput
