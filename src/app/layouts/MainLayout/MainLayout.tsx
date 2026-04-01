@@ -1,12 +1,11 @@
 import { Outlet } from "react-router-dom";
-// import { Navbar } from "../widgets/Navbar";
 import s from "./MainLayout.module.scss";
+import { NavPanel } from "../../../widgets";
 
 export const MainLayout = () => {
     return (
         <div className={s.wrapper}>
-            {/* <Navbar /> */}
-            <nav>nav</nav>
+            <NavPanel />
 
             <div style={{ flex: 1, padding: "20px" }}>
                 <Outlet />

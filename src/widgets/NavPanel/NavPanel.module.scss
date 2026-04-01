@@ -1,0 +1,23 @@
+@use "../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    width: 288px;
+    background-color: $color-surface;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px;
+}
+
+.logoNavigation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.logo {
+    color: $color-primary;
+    width: 100px;
+    height: 25px;
+}

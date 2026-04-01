@@ -1,0 +1,8 @@
+@use "../../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
