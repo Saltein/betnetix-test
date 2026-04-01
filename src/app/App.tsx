@@ -9,25 +9,30 @@ import {
     UsersPage,
 } from "../pages";
 import { MainLayout } from "./layouts";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<LoginPage />} />
+        <Provider store={store}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
 
-                <Route element={<ProtectedRoute />}>
-                    <Route element={<MainLayout />}>
-                        <Route path="/posts" element={<PostsPage />} />
-                        <Route path="/admins" element={<AdminsPage />} />
-                        <Route path="/users" element={<UsersPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
+                    <Route element={<ProtectedRoute />}>
+                        <Route element={<MainLayout />}>
+                            <Route path="/" element={<PostsPage />} />
+                            <Route path="/posts" element={<PostsPage />} />
+                            <Route path="/admins" element={<AdminsPage />} />
+                            <Route path="/users" element={<UsersPage />} />
+                            <Route path="/profile" element={<ProfilePage />} />
 
-                        <Route path="/posts/:id" element={<PostPage />} />
+                            <Route path="/posts/:id" element={<PostPage />} />
+                        </Route>
                     </Route>
-                </Route>
-            </Routes>
-        </BrowserRouter>
+                </Routes>
+            </BrowserRouter>
+        </Provider>
     );
 }
 
