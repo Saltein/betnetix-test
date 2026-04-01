@@ -3,7 +3,7 @@ import { z } from "zod";
 export const loginSchema = z.object({
     login: z
         .string()
-        .min(4, "Минимум 8 символов")
+        .min(4, "Минимум 4 символов")
         .max(32, "Максимум 32 символа"),
 
     newPassword: z

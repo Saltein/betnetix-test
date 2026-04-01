@@ -7,7 +7,10 @@ interface NavButtonProps {
     to: string;
     title: string;
     Icon?: React.FC<React.SVGProps<SVGSVGElement>>;
-    currentLocation: string;
+    currentLocation?: string;
+    alwaysActive?: boolean;
+    justifyContent?: "flex-start" | "flex-end" | "center";
+    onClick?: () => void;
 }
 
 export const NavButton: FunctionComponent<NavButtonProps> = ({
@@ -15,13 +18,20 @@ export const NavButton: FunctionComponent<NavButtonProps> = ({
     title,
     Icon,
     currentLocation,
+    alwaysActive = false,
+    justifyContent = "flex-start",
+    onClick,
 }) => {
     const navigate = useNavigate();
 
     return (
         <Button
-            className={`${s.button} ${currentLocation === to ? s.active : ""}`}
-            onClick={() => navigate(to)}
+            style={{ justifyContent: justifyContent }}
+            className={`${s.button} ${currentLocation === to || alwaysActive ? s.active : ""}`}
+            onClick={() => {
+                navigate(to);
+                if (onClick) onClick();
+            }}
         >
             {Icon && <Icon className={s.icon} />}
             {title}

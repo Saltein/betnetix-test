@@ -1,7 +1,7 @@
 import type { FunctionComponent } from "react";
-import { DefaultInput } from "../../../shared";
-import { loginSchema } from "../../../shared/validation/loginSchema";
+import { DefaultInput } from "../../../../../shared";
 import s from "./LoginInputs.module.scss";
+import { loginSchema } from "../../../../../shared/validation/loginSchema";
 
 interface LoginInputsProps {
     isMobile?: boolean;

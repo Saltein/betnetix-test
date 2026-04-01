@@ -1,0 +1,49 @@
+@use "../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    background-color: $color-primary-extra-lite;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    cursor: pointer;
+}
+
+.profile {
+    display: flex;
+    gap: 8px;
+    height: 40px;
+}
+
+.avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: $color-surface;
+    color: $color-primary;
+}
+
+.info {
+    height: 100%;
+}
+
+.name {
+    font-family: Roboto;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-text-1;
+    height: 20px;
+}
+
+.username {
+    font-family: Roboto;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-primary;
+    height: 20px;
+}

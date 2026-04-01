@@ -1,7 +1,7 @@
 import { Button, Form } from "@heroui/react";
 import { useEffect, type FunctionComponent } from "react";
 import { BodyMobile, Header } from "../../../../widgets";
-import { LoginInputs } from "../../../../pages/LoginPage/LoginInputs/LoginInputs";
+import { LoginInputs } from "./LoginInputs/LoginInputs";
 import { useLoginMutation } from "../../../../app/api/authSliceApi";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
