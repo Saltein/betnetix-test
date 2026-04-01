@@ -1,0 +1,58 @@
+@use "../../../../shared/styles/styles.scss" as *;
+
+.formMobile {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-background;
+    align-items: center;
+    gap: 20px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xxl;
+    background-color: $color-surface;
+    box-shadow: $shadows-12;
+    border-radius: $radius-lg;
+    padding: 60px;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+}
+
+.icon {
+    height: 25px;
+    width: 100px;
+    color: $color-primary;
+}
+
+.titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xl;
+}
+
+.titlesMobile {
+    gap: $spacing-md;
+}
+
+.button {
+    width: 100%;
+    border-radius: 12px;
+    height: 48px;
+    background-color: $color-primary;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+
+    &.buttonMobile {
+        height: 40px;
+    }
+}
+
+.error {
+    color: red;
+}
