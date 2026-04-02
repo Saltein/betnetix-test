@@ -26,6 +26,7 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
             {
                 url: "/auth/refresh",
                 method: "POST",
+                credentials: "include",
             },
             api,
             extraOptions,
@@ -63,10 +64,7 @@ export const authApi = createApi({
     }),
 });
 
-export const {
-    useLoginMutation,
-    useGetCurrentUserQuery,
-} = authApi;
+export const { useLoginMutation, useGetCurrentUserQuery } = authApi;
 
 export const authReducer = authApi.reducer;
 export const authMiddleware = authApi.middleware;

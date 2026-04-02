@@ -1,10 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useGetCurrentUserQuery } from "../../api/authSliceApi";
 
 export const ProtectedRoute = () => {
-    const accessToken = Cookies.get("accessToken");
+    const { data, isLoading, isError } = useGetCurrentUserQuery();
 
-    if (!accessToken) {
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError || !data) {
         return <Navigate to="/login" replace />;
     }
 
