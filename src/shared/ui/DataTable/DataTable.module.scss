@@ -1,15 +1,24 @@
 @use "../../styles/styles.scss" as *;
 
 .wrapper {
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
+    justify-content: space-between;
+    flex: 1;
 }
 
 .tableWrapper {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     background-color: $color-surface;
     border-radius: 16px;
+    flex: 1; // занимает всё свободное место
+    min-height: 0; // позволяет сжаться меньше содержимого
+    overflow-y: auto; // уже есть
 }
 
 .table {
@@ -39,6 +48,8 @@
     line-height: 20px;
     vertical-align: middle;
     color: $color-text-7;
+
+    cursor: pointer;
 
     &.activeSort {
         font-weight: 600;
@@ -95,21 +106,72 @@
 }
 
 .bottomPanelWrapper {
-}
-
-.bottomPanel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
 }
 
 .rowsPerPage {
+    display: flex;
+    gap: 15px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    color: $color-text-5;
 }
 
 .select {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    color: $color-primary;
 }
 
 .pagination {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    border: 2px solid $color-primary;
+    border-radius: 14px;
+    overflow: hidden;
 }
 
 .paginationButton {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid $color-primary;
+    cursor: pointer;
+    color: $color-primary;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 14px;
+    line-height: 20px;
+
+    &:first-child,
+    &:last-child {
+        width: 60px;
+        border-right: none;
+    }
+
+    &:first-child {
+        border-left: none;
+    }
+
+    &:hover {
+        background-color: $color-primary-lite;
+    }
+
+    &.active {
+        background-color: $color-primary;
+        color: $color-surface;
+    }
 }
 
 .currentPage {
@@ -132,4 +194,15 @@
 .textSpecial {
 }
 .textDefault {
+}
+
+.sortIcon {
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+}
+
+.paginationIcon {
+    height: 20px;
+    width: 20px;
 }

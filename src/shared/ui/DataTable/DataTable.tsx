@@ -1,14 +1,9 @@
-import { useState, useMemo, type FunctionComponent, act } from "react";
-import {
-    ChevronUpIcon,
-    ChevronDownIcon,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    ChevronDoubleLeftIcon,
-    ChevronDoubleRightIcon,
-} from "@heroicons/react/24/outline";
+import { useState, useMemo, type FunctionComponent, useEffect } from "react";
+import ChevronLeft from "../../assets/icons/leftChevron.svg?react";
+import SortIcon from "../../assets/icons/sort.svg?react";
 
 import s from "./DataTable.module.scss";
+import { set } from "zod";
 
 export interface Column {
     key: string;
@@ -86,8 +81,31 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
         setCurrentPage(Math.max(1, Math.min(page, totalPages)));
     };
 
-    const startEntry = (currentPage - 1) * rowsPerPage + 1;
-    const endEntry = Math.min(currentPage * rowsPerPage, sortedData.length);
+    const [pagesArray, setPagesArray] = useState([1, 2, 3]);
+
+    useEffect(() => {
+        let left = 1;
+        let right = 3;
+        let middle = right - left;
+
+        if (currentPage === 1) {
+            left = 1;
+            middle = 2;
+            right = 3;
+        } else if (currentPage === totalPages) {
+            left = totalPages - 2;
+            middle = totalPages - 1;
+            right = totalPages;
+        } else {
+            left = currentPage - 1;
+            middle = currentPage;
+            right = currentPage + 1;
+        }
+
+        setPagesArray([left, middle, right]);
+
+        console.log("pagesArray", pagesArray);
+    }, [currentPage]);
 
     return (
         <div className={s.wrapper}>
@@ -112,12 +130,9 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                         className={`${s.tableHeadCellWrapper} ${sortConfig?.key === column.key ? s.activeSort : ""}`}
                                     >
                                         <span>{column.label}</span>
-                                        {sortConfig?.key === column.key &&
-                                            (sortConfig.direction === "asc" ? (
-                                                <ChevronUpIcon className="h-4 w-4 text-blue-600" />
-                                            ) : (
-                                                <ChevronDownIcon className="h-4 w-4 text-blue-600" />
-                                            ))}
+                                        {sortConfig?.key === column.key && (
+                                            <SortIcon className={s.sortIcon} />
+                                        )}
                                     </div>
                                 </th>
                             ))}
@@ -159,9 +174,16 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                     style={{}}
                                                     className={s.cell}
                                                 >
-                                                    <div className={s.buttonWrapper}>
+                                                    <div
+                                                        className={
+                                                            s.buttonWrapper
+                                                        }
+                                                    >
                                                         {ActionButton ? (
-                                                            <ActionButton {...actionButtonProps} id={row.id} />
+                                                            <ActionButton
+                                                                {...actionButtonProps}
+                                                                id={row.id}
+                                                            />
                                                         ) : (
                                                             <span>...</span>
                                                         )}
@@ -200,74 +222,52 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
             </div>
 
             <div className={s.bottomPanelWrapper}>
-                <div className={s.bottomPanel}>
-                    <div>
-                        Показано{" "}
-                        <span className="font-medium text-gray-900">
-                            {startEntry}–{endEntry}
-                        </span>{" "}
-                        из{" "}
-                        <span className="font-medium text-gray-900">
-                            {sortedData.length}
-                        </span>
-                    </div>
-
-                    <div className={s.rowsPerPage}>
-                        <span className="text-gray-500">
-                            Строк на странице:
-                        </span>
-                        <select
-                            value={rowsPerPage}
-                            onChange={(e) => {
-                                setRowsPerPage(Number(e.target.value));
-                                setCurrentPage(1);
-                            }}
-                            className={s.select}
-                        >
-                            {[5, 10, 25, 50, 100].map((size) => (
-                                <option key={size} value={size}>
-                                    {size}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                <div className={s.rowsPerPage}>
+                    <span>Строк на странице:</span>
+                    <select
+                        value={rowsPerPage}
+                        onChange={(e) => {
+                            setRowsPerPage(Number(e.target.value));
+                            setCurrentPage(1);
+                        }}
+                        className={s.select}
+                    >
+                        {[5, 10, 25, 50, 100].map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className={s.pagination}>
                     <button
-                        onClick={() => goToPage(1)}
-                        disabled={currentPage === 1}
-                        className={`${s.paginationButton} ${s.first}`}
-                    >
-                        <ChevronDoubleLeftIcon className="h-4 w-4" />
-                    </button>
-
-                    <button
                         onClick={() => goToPage(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className={`${s.paginationButton} ${s.prev}`}
+                        className={s.paginationButton}
                     >
-                        <ChevronLeftIcon className="h-4 w-4" />
+                        <ChevronLeft className={s.paginationIcon} />
                     </button>
 
-                    <div className={s.currentPage}>
-                        {currentPage} из {totalPages}
-                    </div>
+                    {pagesArray.map((page) => (
+                        <button
+                            key={page}
+                            onClick={() => goToPage(page)}
+                            className={`${s.paginationButton} ${currentPage === page ? s.active : ""}`}
+                        >
+                            {page}
+                        </button>
+                    ))}
 
                     <button
                         onClick={() => goToPage(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className={`${s.paginationButton} ${s.next}`}
+                        className={s.paginationButton}
                     >
-                        <ChevronRightIcon className="h-4 w-4" />
-                    </button>
-
-                    <button
-                        onClick={() => goToPage(totalPages)}
-                        disabled={currentPage === totalPages}
-                        className={`${s.paginationButton} ${s.last}`}
-                    >
-                        <ChevronDoubleRightIcon className="h-4 w-4" />
+                        <ChevronLeft
+                            className={s.paginationIcon}
+                            style={{ transform: "rotate(0.5turn)" }}
+                        />
                     </button>
                 </div>
             </div>

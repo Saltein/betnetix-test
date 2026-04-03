@@ -13,7 +13,7 @@ export const MainLayout = () => {
         <div className={s.wrapper}>
             <NavPanel />
 
-            <div style={{ flex: 1, padding: "20px", minWidth: 0 }}>
+            <div style={{display: "flex", flex: 1, padding: "20px", minWidth: 0, height: "100%" }}>
                 <Outlet />
             </div>
         </div>
