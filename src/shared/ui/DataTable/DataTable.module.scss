@@ -16,9 +16,8 @@
     overflow-x: hidden;
     background-color: $color-surface;
     border-radius: 16px;
-    flex: 1; // занимает всё свободное место
-    min-height: 0; // позволяет сжаться меньше содержимого
-    overflow-y: auto; // уже есть
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .table {
@@ -110,6 +109,7 @@
     justify-content: space-between;
     align-items: center;
     height: 40px;
+    margin-top: 20px;
 }
 
 .rowsPerPage {

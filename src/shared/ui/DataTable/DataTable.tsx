@@ -88,6 +88,8 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
         let right = 3;
         let middle = right - left;
 
+        let newArray = [];
+
         if (currentPage === 1) {
             left = 1;
             middle = 2;
@@ -102,10 +104,24 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
             right = currentPage + 1;
         }
 
-        setPagesArray([left, middle, right]);
+        newArray = [left, middle, right];
+
+        if (totalPages === 2) {
+            left = 1;
+            middle = 2;
+
+            newArray = [left, middle];
+        }
+        if (totalPages === 1) {
+            left = 1;
+
+            newArray = [left];
+        }
+
+        setPagesArray(newArray);
 
         console.log("pagesArray", pagesArray);
-    }, [currentPage]);
+    }, [currentPage, data, rowsPerPage, totalPages]);
 
     return (
         <div className={s.wrapper}>
