@@ -19,6 +19,7 @@ interface TableProps<T> {
     actionButtonProps?: any;
     SpecialCell?: FunctionComponent<T>;
     searchQuery?: string;
+    filterColumn?: string;
 }
 
 export const DataTable: FunctionComponent<TableProps<any>> = ({
@@ -28,9 +29,10 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
     actionButtonProps,
     SpecialCell,
     searchQuery,
+    filterColumn,
 }) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(7);
     const [sortConfig, setSortConfig] = useState<{
         key: string;
         direction: "asc" | "desc";
@@ -52,8 +54,11 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
     const data = useMemo(() => {
         if (!searchQuery) return tableData;
 
+        if (!filterColumn) return tableData;
         return tableData.filter((item) =>
-            item.body.toLowerCase().includes(searchQuery.toLowerCase()),
+            item[filterColumn]
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()),
         );
     }, [tableData, searchQuery]);
 
@@ -255,7 +260,7 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                         }}
                         className={s.select}
                     >
-                        {[5, 10, 25, 50, 100].map((size) => (
+                        {[5, 7, 10, 15, 25, 50, 100].map((size) => (
                             <option key={size} value={size}>
                                 {size}
                             </option>

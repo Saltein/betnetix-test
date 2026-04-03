@@ -61,6 +61,7 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
                 actionButtonProps={{ to: "/post" }}
                 SpecialCell={ProfileCell}
                 searchQuery={searchQuery}
+                filterColumn="body"
             />
         </StandardPageLayout>
     );
