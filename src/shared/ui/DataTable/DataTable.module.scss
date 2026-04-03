@@ -1,0 +1,130 @@
+@use "../../styles/styles.scss" as *;
+
+.wrapper {
+    overflow: hidden;
+}
+
+.tableWrapper {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: $color-surface;
+    border-radius: 16px;
+}
+
+.table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.tableHead {
+    text-align: left;
+    background-color: $color-table-head;
+    border-bottom: 1px solid $color-border-14;
+}
+
+.tableHeadCell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 44px;
+}
+
+.tableHeadCellWrapper {
+    display: flex;
+    align-items: center;
+
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: middle;
+    color: $color-text-7;
+
+    &.activeSort {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+        vertical-align: middle;
+        color: $color-text-1;
+    }
+}
+
+.tableBody {
+}
+
+.row {
+    border-bottom: 1px solid $color-border-14;
+    height: 64px;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.row td:first-child {
+    padding-left: 24px;
+}
+
+.row td:last-child {
+    padding-right: 24px;
+}
+
+.tableHeadRow th:first-child {
+    padding-left: 24px;
+}
+
+.tableHeadRow th:last-child {
+    padding-right: 24px;
+}
+
+.cell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 32px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.bottomPanelWrapper {
+}
+
+.bottomPanel {
+}
+
+.rowsPerPage {
+}
+
+.select {
+}
+
+.pagination {
+}
+
+.paginationButton {
+}
+
+.currentPage {
+}
+
+.textLite {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-text-5;
+}
+.textMain {
+    font-weight: 600;
+    color: $color-text-2;
+}
+.textColor {
+    font-weight: 400;
+    color: $color-text-blue-3;
+}
+.textSpecial {
+}
+.textDefault {
+}

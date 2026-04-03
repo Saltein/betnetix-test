@@ -2,7 +2,7 @@ import { Button, Form } from "@heroui/react";
 import { useEffect, type FunctionComponent } from "react";
 import { BodyMobile, Header } from "../../../../widgets";
 import { LoginInputs } from "./LoginInputs/LoginInputs";
-import { useLoginMutation } from "../../../../app/api/authSliceApi";
+import { useLoginMutation } from "../../../../app/api/auth/authSliceApi";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import s from "./LoginForm.module.scss";
@@ -33,6 +33,7 @@ export const LoginForm: FunctionComponent<LoginFormProps> = ({
         if (data) {
             Cookies.set("refreshToken", data.refreshToken);
             Cookies.set("accessToken", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken); // чисто для того, чтобы обойти cors, ведь он отклоняет credentials
             navigate("/posts");
         }
         if (error) {

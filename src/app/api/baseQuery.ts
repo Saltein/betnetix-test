@@ -1,11 +1,6 @@
-import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import Cookies from "js-cookie";
-import {
-    type GetCurrentUserResponse,
-    type LoginResponse,
-    type LoginParams,
-    type RefreshTokenResponse,
-} from "./authApiTypes";
+import type { RefreshTokenResponse } from "./auth/authApiTypes";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: "https://test-api.live-server.xyz",
@@ -18,15 +13,21 @@ const baseQuery = fetchBaseQuery({
     },
 });
 
-const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+export const baseQueryWithReauth = async (
+    args: any,
+    api: any,
+    extraOptions: any,
+) => {
     let result = await baseQuery(args, api, extraOptions);
+
+    const refreshToken = localStorage.getItem("refreshToken"); // чисто для того, чтобы обойти cors, ведь он отклоняет credentials
 
     if (result.error && result.error.status === 401) {
         const refreshResult = await baseQuery(
             {
                 url: "/auth/refresh",
                 method: "POST",
-                credentials: "include",
+                body: { refreshToken },
             },
             api,
             extraOptions,
@@ -44,27 +45,3 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
     return result;
 };
-
-export const authApi = createApi({
-    reducerPath: "authApi",
-    baseQuery: baseQueryWithReauth,
-    endpoints: (builder) => ({
-        login: builder.mutation<LoginResponse, LoginParams>({
-            query: (body) => ({
-                url: "/auth/login",
-                method: "POST",
-                body: body,
-            }),
-        }),
-        getCurrentUser: builder.query<GetCurrentUserResponse, void>({
-            query: () => ({
-                url: "/auth/me",
-            }),
-        }),
-    }),
-});
-
-export const { useLoginMutation, useGetCurrentUserQuery } = authApi;
-
-export const authReducer = authApi.reducer;
-export const authMiddleware = authApi.middleware;

@@ -4,7 +4,7 @@ import { NavButton } from "../../shared";
 import LogoutIcon from "../../shared/assets/icons/logout.svg?react";
 import UserIcon from "../../shared/assets/icons/users.svg?react";
 import Cookies from "js-cookie";
-import { useGetCurrentUserQuery } from "../../app/api/authSliceApi";
+import { useGetCurrentUserQuery } from "../../app/api/auth/authSliceApi";
 import { Skeleton } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
 

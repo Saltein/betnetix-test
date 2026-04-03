@@ -1,0 +1,12 @@
+@use "../../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    padding: 60px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+}

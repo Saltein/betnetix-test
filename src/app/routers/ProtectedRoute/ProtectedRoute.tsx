@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useGetCurrentUserQuery } from "../../api/authSliceApi";
+import { useGetCurrentUserQuery } from "../../api/auth/authSliceApi";
 
 export const ProtectedRoute = () => {
     const { data, isLoading, isError } = useGetCurrentUserQuery();
