@@ -1,4 +1,4 @@
-import type { FunctionComponent } from "react";
+import { useState, type FunctionComponent } from "react";
 import { StandardPageLayout } from "../../app/layouts";
 import { DataTable } from "../../shared";
 import { useGetAllPostsQuery } from "../../app/api/posts/postsSliceApi";
@@ -11,7 +11,7 @@ interface PostsPageProps {}
 export const PostsPage: FunctionComponent<PostsPageProps> = () => {
     const { data, isLoading, isError } = useGetAllPostsQuery();
 
-    console.log("posts data", data);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const columns: Column[] = [
         { key: "id", label: "ID", type: "default", width: "90px" },
@@ -51,13 +51,16 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
         <StandardPageLayout
             title="Публикации"
             subtitle="Управление публикациями пользователей"
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
         >
             <DataTable
                 columns={columns}
-                data={data || []}
+                tableData={data || []}
                 ActionButton={ToButton}
-                actionButtonProps={{to: "/post"}}
+                actionButtonProps={{ to: "/post" }}
                 SpecialCell={ProfileCell}
+                searchQuery={searchQuery}
             />
         </StandardPageLayout>
     );

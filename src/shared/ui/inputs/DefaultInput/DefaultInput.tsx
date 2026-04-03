@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import { TextField, Input, Label, FieldError } from "@heroui/react";
-import s from "./DefaultInput.module.scss";
+import s from "../Input.module.scss";
 
 interface DefaultInputProps {
     name: string;

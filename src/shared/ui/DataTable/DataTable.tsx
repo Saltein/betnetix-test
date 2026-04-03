@@ -3,7 +3,6 @@ import ChevronLeft from "../../assets/icons/leftChevron.svg?react";
 import SortIcon from "../../assets/icons/sort.svg?react";
 
 import s from "./DataTable.module.scss";
-import { set } from "zod";
 
 export interface Column {
     key: string;
@@ -15,18 +14,20 @@ export interface Column {
 
 interface TableProps<T> {
     columns: Column[];
-    data: T[];
+    tableData: T[];
     ActionButton?: FunctionComponent<T>;
     actionButtonProps?: any;
     SpecialCell?: FunctionComponent<T>;
+    searchQuery?: string;
 }
 
 export const DataTable: FunctionComponent<TableProps<any>> = ({
     columns,
-    data,
+    tableData,
     ActionButton,
     actionButtonProps,
     SpecialCell,
+    searchQuery,
 }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -47,6 +48,14 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
         }
         setCurrentPage(1);
     };
+
+    const data = useMemo(() => {
+        if (!searchQuery) return tableData;
+
+        return tableData.filter((item) =>
+            item.body.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
+    }, [tableData, searchQuery]);
 
     const sortedData = useMemo(() => {
         if (!sortConfig) return [...data];
@@ -119,9 +128,7 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
         }
 
         setPagesArray(newArray);
-
-        console.log("pagesArray", pagesArray);
-    }, [currentPage, data, rowsPerPage, totalPages]);
+    }, [currentPage, tableData, rowsPerPage, totalPages]);
 
     return (
         <div className={s.wrapper}>

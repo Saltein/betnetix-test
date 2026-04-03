@@ -1,0 +1,16 @@
+@use "../../../styles/styles.scss" as *;
+
+.icon {
+    height: 20px;
+    width: 20px;
+    color: $color-text-11;
+
+    position: absolute;
+    top: 11px;
+    left: 10px;
+    padding: 1px;
+}
+
+.input {
+    padding-left: 36px;
+}
