@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, type FunctionComponent } from "react";
 import {
     ChevronUpIcon,
     ChevronDownIcon,
@@ -9,25 +9,28 @@ import {
 } from "@heroicons/react/24/outline";
 
 import s from "./DataTable.module.scss";
+import type { ProfileCellProps } from "../../../pages/PostsPage/ProfileCell/ProfileCell";
 
 export interface Column {
     key: string;
     label: string;
-    type: "lite" | "main" | "color" | "special" | "default";
+    type: "lite" | "main" | "color" | "special" | "default" | "button";
     width?: string;
+    align?: "left" | "center" | "right";
 }
 
-interface TableProps<T extends Record<string, any>> {
+interface TableProps<T> {
     columns: Column[];
     data: T[];
-    actionButton?: React.ReactNode;
-    specialCell?: React.ReactNode;
+    actionButton?: FunctionComponent;
+    SpecialCell?: FunctionComponent<ProfileCellProps>;
 }
 
-export const DataTable = <T extends Record<string, any>>({
+export const DataTable: FunctionComponent<TableProps<any>> = ({
     columns,
     data,
-}: TableProps<T>) => {
+    SpecialCell,
+}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState<{
@@ -45,7 +48,7 @@ export const DataTable = <T extends Record<string, any>>({
         } else {
             setSortConfig({ key, direction: "asc" });
         }
-        setCurrentPage(1); // Сброс страницы при смене сортировки
+        setCurrentPage(1);
     };
 
     const sortedData = useMemo(() => {
@@ -71,7 +74,6 @@ export const DataTable = <T extends Record<string, any>>({
         });
     }, [data, sortConfig]);
 
-    // Пагинация
     const totalPages = Math.ceil(sortedData.length / rowsPerPage) || 1;
     const paginatedData = useMemo(() => {
         const startIndex = (currentPage - 1) * rowsPerPage;
@@ -87,7 +89,6 @@ export const DataTable = <T extends Record<string, any>>({
 
     return (
         <div className={s.wrapper}>
-            {/* Таблица */}
             <div className={s.tableWrapper}>
                 <table className={s.table}>
                     <thead className={s.tableHead}>
@@ -100,6 +101,12 @@ export const DataTable = <T extends Record<string, any>>({
                                     style={{ width: column.width }}
                                 >
                                     <div
+                                        style={{
+                                            justifyContent:
+                                                column.align === "center"
+                                                    ? column.align
+                                                    : "",
+                                        }}
                                         className={`${s.tableHeadCellWrapper} ${sortConfig?.key === column.key ? s.activeSort : ""}`}
                                     >
                                         <span>{column.label}</span>
@@ -119,17 +126,46 @@ export const DataTable = <T extends Record<string, any>>({
                         {paginatedData.length > 0 ? (
                             paginatedData.map((row, rowIndex) => (
                                 <tr key={rowIndex} className={s.row}>
-                                    {columns.map((column) => (
-                                        <td
-                                            key={column.key}
-                                            className={`${s.cell} ${column.type === "lite" ? s.textLite : ""} ${column.type === "main" ? s.textMain : ""} ${column.type === "color" ? s.textColor : ""}`}
-                                        >
-                                            {row[column.key] !== undefined &&
-                                            row[column.key] !== null
-                                                ? String(row[column.key])
-                                                : "—"}
-                                        </td>
-                                    ))}
+                                    {columns.map((column) => {
+                                        console.log("row", row);
+                                        if (
+                                            column.type === "special" &&
+                                            SpecialCell
+                                        ) {
+                                            return (
+                                                <td
+                                                    key={column.key}
+                                                    className={s.cell}
+                                                >
+                                                    <SpecialCell
+                                                        avatar={row.user.image}
+                                                        firstName={
+                                                            row.user.firstName
+                                                        }
+                                                        lastName={
+                                                            row.user.lastName
+                                                        }
+                                                    />
+                                                </td>
+                                            );
+                                        }
+
+                                        return (
+                                            <td
+                                                key={column.key}
+                                                style={{
+                                                    textAlign: column.align,
+                                                }}
+                                                className={`${s.cell} ${column.type === "lite" ? s.textLite : ""} ${column.type === "main" ? s.textMain : ""} ${column.type === "color" ? s.textColor : ""}`}
+                                            >
+                                                {row[column.key] !==
+                                                    undefined &&
+                                                row[column.key] !== null
+                                                    ? String(row[column.key])
+                                                    : "—"}
+                                            </td>
+                                        );
+                                    })}
                                 </tr>
                             ))
                         ) : (
@@ -143,9 +179,7 @@ export const DataTable = <T extends Record<string, any>>({
                 </table>
             </div>
 
-            {/* Нижняя панель: выбор строк + пагинация */}
             <div className={s.bottomPanelWrapper}>
-                {/* Инфо + выбор количества строк */}
                 <div className={s.bottomPanel}>
                     <div>
                         Показано{" "}
@@ -179,9 +213,7 @@ export const DataTable = <T extends Record<string, any>>({
                     </div>
                 </div>
 
-                {/* Пагинация */}
                 <div className={s.pagination}>
-                    {/* Первая страница */}
                     <button
                         onClick={() => goToPage(1)}
                         disabled={currentPage === 1}
@@ -190,7 +222,6 @@ export const DataTable = <T extends Record<string, any>>({
                         <ChevronDoubleLeftIcon className="h-4 w-4" />
                     </button>
 
-                    {/* Предыдущая */}
                     <button
                         onClick={() => goToPage(currentPage - 1)}
                         disabled={currentPage === 1}
@@ -199,12 +230,10 @@ export const DataTable = <T extends Record<string, any>>({
                         <ChevronLeftIcon className="h-4 w-4" />
                     </button>
 
-                    {/* Текущая страница / Всего */}
                     <div className={s.currentPage}>
                         {currentPage} из {totalPages}
                     </div>
 
-                    {/* Следующая */}
                     <button
                         onClick={() => goToPage(currentPage + 1)}
                         disabled={currentPage === totalPages}
@@ -213,7 +242,6 @@ export const DataTable = <T extends Record<string, any>>({
                         <ChevronRightIcon className="h-4 w-4" />
                     </button>
 
-                    {/* Последняя страница */}
                     <button
                         onClick={() => goToPage(totalPages)}
                         disabled={currentPage === totalPages}

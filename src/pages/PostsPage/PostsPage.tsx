@@ -3,6 +3,7 @@ import { StandardPageLayout } from "../../app/layouts";
 import { DataTable } from "../../shared";
 import { useGetAllPostsQuery } from "../../app/api/posts/postsSliceApi";
 import type { Column } from "../../shared/ui/DataTable/DataTable";
+import { ProfileCell } from "./ProfileCell/ProfileCell";
 
 interface PostsPageProps {}
 
@@ -15,13 +16,33 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
         { key: "id", label: "ID", type: "default", width: "90px" },
         { key: "body", label: "Пост", type: "main" },
         { key: "user", label: "Автор", type: "special", width: "152px" },
-        { key: "views", label: "Просмотры", type: "default", width: "110px" },
-        { key: "likes", label: "Лайки", type: "default", width: "110px" },
+        {
+            key: "views",
+            label: "Просмотры",
+            type: "default",
+            width: "110px",
+            align: "center",
+        },
+        {
+            key: "likes",
+            label: "Лайки",
+            type: "default",
+            width: "110px",
+            align: "center",
+        },
         {
             key: "comments",
             label: "Комментарии",
             type: "default",
-            width: "204px",
+            width: "110px",
+            align: "center",
+        },
+        {
+            key: "button",
+            label: "",
+            type: "button",
+            width: "88px",
+            align: "center",
         },
     ];
 
@@ -30,7 +51,11 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
             title="Публикации"
             subtitle="Управление публикациями пользователей"
         >
-            <DataTable columns={columns} data={data || []} />
+            <DataTable
+                columns={columns}
+                data={data || []}
+                SpecialCell={ProfileCell}
+            />
         </StandardPageLayout>
     );
 };
