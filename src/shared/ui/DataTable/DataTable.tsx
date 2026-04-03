@@ -1,4 +1,4 @@
-import { useState, useMemo, type FunctionComponent } from "react";
+import { useState, useMemo, type FunctionComponent, act } from "react";
 import {
     ChevronUpIcon,
     ChevronDownIcon,
@@ -9,7 +9,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 import s from "./DataTable.module.scss";
-import type { ProfileCellProps } from "../../../pages/PostsPage/ProfileCell/ProfileCell";
 
 export interface Column {
     key: string;
@@ -22,13 +21,16 @@ export interface Column {
 interface TableProps<T> {
     columns: Column[];
     data: T[];
-    actionButton?: FunctionComponent;
-    SpecialCell?: FunctionComponent<ProfileCellProps>;
+    ActionButton?: FunctionComponent<T>;
+    actionButtonProps?: any;
+    SpecialCell?: FunctionComponent<T>;
 }
 
 export const DataTable: FunctionComponent<TableProps<any>> = ({
     columns,
     data,
+    ActionButton,
+    actionButtonProps,
     SpecialCell,
 }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -127,7 +129,6 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                             paginatedData.map((row, rowIndex) => (
                                 <tr key={rowIndex} className={s.row}>
                                     {columns.map((column) => {
-                                        console.log("row", row);
                                         if (
                                             column.type === "special" &&
                                             SpecialCell
@@ -135,6 +136,7 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                             return (
                                                 <td
                                                     key={column.key}
+                                                    style={{}}
                                                     className={s.cell}
                                                 >
                                                     <SpecialCell
@@ -146,6 +148,24 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                             row.user.lastName
                                                         }
                                                     />
+                                                </td>
+                                            );
+                                        }
+
+                                        if (column.type === "button") {
+                                            return (
+                                                <td
+                                                    key={column.key}
+                                                    style={{}}
+                                                    className={s.cell}
+                                                >
+                                                    <div className={s.buttonWrapper}>
+                                                        {ActionButton ? (
+                                                            <ActionButton {...actionButtonProps} id={row.id} />
+                                                        ) : (
+                                                            <span>...</span>
+                                                        )}
+                                                    </div>
                                                 </td>
                                             );
                                         }

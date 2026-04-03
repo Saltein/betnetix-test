@@ -4,6 +4,7 @@ import { DataTable } from "../../shared";
 import { useGetAllPostsQuery } from "../../app/api/posts/postsSliceApi";
 import type { Column } from "../../shared/ui/DataTable/DataTable";
 import { ProfileCell } from "./ProfileCell/ProfileCell";
+import { ToButton } from "../../shared/ui/ToButton/ToButton";
 
 interface PostsPageProps {}
 
@@ -54,6 +55,8 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
             <DataTable
                 columns={columns}
                 data={data || []}
+                ActionButton={ToButton}
+                actionButtonProps={{to: "/post"}}
                 SpecialCell={ProfileCell}
             />
         </StandardPageLayout>
