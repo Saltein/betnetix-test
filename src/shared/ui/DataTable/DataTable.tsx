@@ -3,6 +3,7 @@ import ChevronLeft from "../../assets/icons/leftChevron.svg?react";
 import SortIcon from "../../assets/icons/sort.svg?react";
 
 import s from "./DataTable.module.scss";
+import type { SortDirection } from "../../types";
 
 export interface Column {
     key: string;
@@ -32,10 +33,10 @@ interface TableProps<T> {
 
     sortConfig?: {
         key: string;
-        direction: "asc" | "desc";
+        direction: SortDirection;
     } | null;
 
-    onSortChange?: (config: { key: string; direction: "asc" | "desc" }) => void;
+    onSortChange?: (config: { key: string; direction: SortDirection }) => void;
 }
 
 export const DataTable: FunctionComponent<TableProps<any>> = ({

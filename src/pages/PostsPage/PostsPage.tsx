@@ -1,10 +1,13 @@
 import { useState, useEffect, type FunctionComponent } from "react";
 import { StandardPageLayout } from "../../app/layouts";
-import { DataTable } from "../../shared";
+import { DataList, DataTable } from "../../shared";
 import { useGetAllPostsQuery } from "../../app/api/posts/postsSliceApi";
 import type { Column } from "../../shared/ui/DataTable/DataTable";
 import { ProfileCell } from "./ProfileCell/ProfileCell";
 import { ToButton } from "../../shared/ui/ToButton/ToButton";
+import { useMediaQuery } from "react-responsive";
+import s from "./PostsPage.module.scss";
+import type { SortDirection } from "../../shared/types";
 
 interface PostsPageProps {}
 
@@ -12,12 +15,14 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
 
+    const isMobile = useMediaQuery({ maxWidth: 768 });
+
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(7);
 
     const [sortConfig, setSortConfig] = useState<{
         key: string;
-        direction: "asc" | "desc";
+        direction: SortDirection;
     } | null>(null);
 
     useEffect(() => {
@@ -34,7 +39,7 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
 
     const { data, isLoading, isFetching, isError } = useGetAllPostsQuery({
         page,
-        limit,
+        limit: isMobile ? 0 : limit,
         search: debouncedSearch,
         sortBy: sortConfig?.key,
         order: sortConfig?.direction,
@@ -81,8 +86,6 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
         },
     ];
 
-    if (isError) return <div>Ошибка загрузки</div>;
-
     return (
         <StandardPageLayout
             title="Публикации"
@@ -90,21 +93,35 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
         >
-            <DataTable
-                columns={columns}
-                tableData={data?.posts || []}
-                totalCount={data?.total || 0}
-                currentPage={page}
-                onPageChange={setPage}
-                rowsPerPage={limit}
-                onRowsPerPageChange={setLimit}
-                ActionButton={ToButton}
-                actionButtonProps={{ to: "/post" }}
-                SpecialCell={ProfileCell}
-                isLoading={isLoading || isFetching}
-                sortConfig={sortConfig}
-                onSortChange={setSortConfig}
-            />
+            {isError && <div>Произошла ошибка</div>}
+
+            {isMobile ? (
+                <div className={s.mobileWrapper}>
+                    <DataList
+                        data={data?.posts || []}
+                        type="post"
+                        ActionButton={ToButton}
+                        actionButtonProps={{ to: "/post" }}
+                    />
+                    {isLoading && <div>Загрузка...</div>}
+                </div>
+            ) : (
+                <DataTable
+                    columns={columns}
+                    tableData={data?.posts || []}
+                    totalCount={data?.total || 0}
+                    currentPage={page}
+                    onPageChange={setPage}
+                    rowsPerPage={limit}
+                    onRowsPerPageChange={setLimit}
+                    ActionButton={ToButton}
+                    actionButtonProps={{ to: "/post" }}
+                    SpecialCell={ProfileCell}
+                    isLoading={isLoading || isFetching}
+                    sortConfig={sortConfig}
+                    onSortChange={setSortConfig}
+                />
+            )}
         </StandardPageLayout>
     );
 };

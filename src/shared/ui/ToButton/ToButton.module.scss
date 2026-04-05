@@ -7,10 +7,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    &.mobile {
+        height: 24px;
+        width: 24px;
+    }
 }
 
 .icon {
     height: 40px;
     width: 40px;
     color: $color-text-7;
+
+    &.mobile {
+        height: 24px;
+        width: 24px;
+    }
 }

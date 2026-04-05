@@ -45,7 +45,7 @@ export const LoginForm: FunctionComponent<LoginFormProps> = ({
         return (
             <Form className={s.formMobile} onSubmit={handleSubmit}>
                 <Header isLogin />
-                <BodyMobile>
+                <BodyMobile paddings>
                     <div className={`${s.titles} ${s.titlesMobile}`}>
                         <h2>Панель администратора</h2>
                         <h3>Войдите в систему для продолжения</h3>

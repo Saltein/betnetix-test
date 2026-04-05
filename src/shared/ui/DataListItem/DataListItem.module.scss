@@ -1,0 +1,89 @@
+@use "../../../shared/styles/styles.scss" as *;
+
+.dataListItemWrapper {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid $color-border-15;
+    padding: 12px;
+    gap: 8px;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 24px;
+}
+
+.id {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: $color-text-5;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user {
+    display: flex;
+    gap: 8px;
+}
+
+.avatar {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: $color-primary-extra-lite;
+}
+
+.name {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: middle;
+    color: $color-text-2;
+}
+
+.body {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: middle;
+    color: $color-text-2;
+}
+
+.footer {
+    display: flex;
+    height: 16px;
+    gap: 8px;
+}
+
+.metric {
+    display: flex;
+    gap: 4px;
+    color: $color-text-5;
+    width: 60px;
+}
+
+.icon {
+    height: 16px;
+    width: 16px;
+}
+
+.metricText {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

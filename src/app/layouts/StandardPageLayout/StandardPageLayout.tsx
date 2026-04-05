@@ -2,7 +2,6 @@ import type { FunctionComponent } from "react";
 import s from "./StandardPageLayout.module.scss";
 import { SearchInput } from "../../../shared";
 import { useMediaQuery } from "react-responsive";
-import { is } from "zod/locales";
 import { BodyMobile } from "../../../widgets";
 
 interface StandardPageLayoutProps {
