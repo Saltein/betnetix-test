@@ -1,22 +1,54 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "../baseQuery";
-import type { GetAllPostResponse, Post } from "./postsApiTypes";
 
 export const postsApi = createApi({
     reducerPath: "postsApi",
     baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
-        getAllPosts: builder.query<GetAllPostResponse[], void>({
-            async queryFn(_, _queryApi, _extraOptions, baseQuery) {
-                const postsResult = await baseQuery({
-                    url: "/posts",
-                });
+        getAllPosts: builder.query<
+            { posts: any[]; total: number },
+            {
+                page: number;
+                limit: number;
+                search?: string;
+                sortBy?: string;
+                order?: "asc" | "desc";
+            }
+        >({
+            async queryFn(
+                { page, limit, search, sortBy, order },
+                _api,
+                _extra,
+                baseQuery,
+            ) {
+                let sortByNew;
+                if (sortBy === "likes") {
+                    sortByNew = "reactions";
+                } else {
+                    sortByNew = sortBy;
+                }
+                
+                const skip = (page - 1) * limit;
+
+                let url = "";
+
+                if (search) {
+                    url = `/posts/search?q=${search}&limit=${limit}&skip=${skip}`;
+                } else {
+                    url = `/posts?limit=${limit}&skip=${skip}`;
+                }
+
+                if (sortByNew) {
+                    url += `&sortBy=${sortByNew}&order=${order ?? "asc"}`;
+                }
+
+                const postsResult = await baseQuery({ url });
 
                 if (postsResult.error) {
                     return { error: postsResult.error };
                 }
 
-                const posts = (postsResult.data as any).posts;
+                const { posts, total } = postsResult.data as any;
 
                 const usersCache: Record<number, any> = {};
 
@@ -44,8 +76,8 @@ export const postsApi = createApi({
                         return {
                             id: post.id,
                             body: post.body,
-                            likes: post.reactions.likes,
-                            views: post.views,
+                            likes: post.reactions?.likes ?? 0,
+                            views: post.views ?? 0,
                             comments: commentsCount,
                             user: {
                                 image: user?.image,
@@ -56,18 +88,17 @@ export const postsApi = createApi({
                     }),
                 );
 
-                return { data: enrichedPosts };
+                return {
+                    data: {
+                        posts: enrichedPosts,
+                        total,
+                    },
+                };
             },
-        }),
-        getPostById: builder.query<Post, number>({
-            query: (id) => ({
-                url: `/posts/${id}`,
-            }),
         }),
     }),
 });
 
-export const { useGetAllPostsQuery, useGetPostByIdQuery } = postsApi;
-
+export const { useGetAllPostsQuery } = postsApi;
 export const postsReducer = postsApi.reducer;
 export const postsMiddleware = postsApi.middleware;

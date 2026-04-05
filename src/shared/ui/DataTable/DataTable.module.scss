@@ -47,9 +47,7 @@
     line-height: 20px;
     vertical-align: middle;
     color: $color-text-7;
-
-    cursor: pointer;
-
+    
     &.activeSort {
         font-weight: 600;
         font-size: 14px;
@@ -205,4 +203,8 @@
 .paginationIcon {
     height: 20px;
     width: 20px;
+}
+
+.loading {
+    color: $color-primary;
 }

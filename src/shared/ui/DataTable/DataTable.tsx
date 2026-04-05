@@ -1,4 +1,4 @@
-import { useState, useMemo, type FunctionComponent, useEffect } from "react";
+import { type FunctionComponent } from "react";
 import ChevronLeft from "../../assets/icons/leftChevron.svg?react";
 import SortIcon from "../../assets/icons/sort.svg?react";
 
@@ -10,130 +10,77 @@ export interface Column {
     type: "lite" | "main" | "color" | "special" | "default" | "button";
     width?: string;
     align?: "left" | "center" | "right";
+    sortable?: boolean;
 }
 
 interface TableProps<T> {
     columns: Column[];
     tableData: T[];
-    ActionButton?: FunctionComponent<T>;
+    totalCount: number;
+
+    currentPage: number;
+    onPageChange: (page: number) => void;
+
+    rowsPerPage: number;
+    onRowsPerPageChange: (value: number) => void;
+
+    ActionButton?: FunctionComponent<any>;
     actionButtonProps?: any;
-    SpecialCell?: FunctionComponent<T>;
-    searchQuery?: string;
-    filterColumn?: string;
+    SpecialCell?: FunctionComponent<any>;
+
+    isLoading?: boolean;
+
+    sortConfig?: {
+        key: string;
+        direction: "asc" | "desc";
+    } | null;
+
+    onSortChange?: (config: { key: string; direction: "asc" | "desc" }) => void;
 }
 
 export const DataTable: FunctionComponent<TableProps<any>> = ({
     columns,
     tableData,
+    totalCount,
+    currentPage,
+    onPageChange,
+    rowsPerPage,
+    onRowsPerPageChange,
     ActionButton,
     actionButtonProps,
     SpecialCell,
-    searchQuery,
-    filterColumn,
+    isLoading,
+    sortConfig,
+    onSortChange,
 }) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(7);
-    const [sortConfig, setSortConfig] = useState<{
-        key: string;
-        direction: "asc" | "desc";
-    } | null>(null);
-
-    // Сортировка
     const handleSort = (key: string) => {
+        if (!onSortChange) return;
+
         if (sortConfig?.key === key) {
-            setSortConfig({
+            onSortChange({
                 key,
                 direction: sortConfig.direction === "asc" ? "desc" : "asc",
             });
         } else {
-            setSortConfig({ key, direction: "asc" });
+            onSortChange({ key, direction: "asc" });
         }
-        setCurrentPage(1);
     };
 
-    const data = useMemo(() => {
-        if (!searchQuery) return tableData;
+    const totalPages = Math.ceil(totalCount / rowsPerPage);
 
-        if (!filterColumn) return tableData;
-        return tableData.filter((item) =>
-            item[filterColumn]
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase()),
-        );
-    }, [tableData, searchQuery]);
+    const getPages = () => {
+        if (totalPages <= 3) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1);
+        }
 
-    const sortedData = useMemo(() => {
-        if (!sortConfig) return [...data];
+        if (currentPage === 1) return [1, 2, 3];
+        if (currentPage === totalPages)
+            return [totalPages - 2, totalPages - 1, totalPages];
 
-        return [...data].sort((a, b) => {
-            const aValue = a[sortConfig.key];
-            const bValue = b[sortConfig.key];
-
-            if (aValue === null || aValue === undefined) return 1;
-            if (bValue === null || bValue === undefined) return -1;
-
-            let comparison = 0;
-            if (typeof aValue === "string" && typeof bValue === "string") {
-                comparison = aValue.localeCompare(bValue, undefined, {
-                    numeric: true,
-                });
-            } else {
-                comparison = aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
-            }
-
-            return comparison * (sortConfig.direction === "asc" ? 1 : -1);
-        });
-    }, [data, sortConfig]);
-
-    const totalPages = Math.ceil(sortedData.length / rowsPerPage) || 1;
-    const paginatedData = useMemo(() => {
-        const startIndex = (currentPage - 1) * rowsPerPage;
-        return sortedData.slice(startIndex, startIndex + rowsPerPage);
-    }, [sortedData, currentPage, rowsPerPage]);
-
-    const goToPage = (page: number) => {
-        setCurrentPage(Math.max(1, Math.min(page, totalPages)));
+        return [currentPage - 1, currentPage, currentPage + 1];
     };
 
-    const [pagesArray, setPagesArray] = useState([1, 2, 3]);
-
-    useEffect(() => {
-        let left = 1;
-        let right = 3;
-        let middle = right - left;
-
-        let newArray = [];
-
-        if (currentPage === 1) {
-            left = 1;
-            middle = 2;
-            right = 3;
-        } else if (currentPage === totalPages) {
-            left = totalPages - 2;
-            middle = totalPages - 1;
-            right = totalPages;
-        } else {
-            left = currentPage - 1;
-            middle = currentPage;
-            right = currentPage + 1;
-        }
-
-        newArray = [left, middle, right];
-
-        if (totalPages === 2) {
-            left = 1;
-            middle = 2;
-
-            newArray = [left, middle];
-        }
-        if (totalPages === 1) {
-            left = 1;
-
-            newArray = [left];
-        }
-
-        setPagesArray(newArray);
-    }, [currentPage, tableData, rowsPerPage, totalPages]);
+    const pagesArray = getPages();
 
     return (
         <div className={s.wrapper}>
@@ -144,18 +91,28 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                             {columns.map((column) => (
                                 <th
                                     key={column.key}
-                                    onClick={() => handleSort(column.key)}
+                                    onClick={() => {
+                                        if (column.sortable)
+                                            handleSort(column.key);
+                                    }}
                                     className={s.tableHeadCell}
                                     style={{ width: column.width }}
                                 >
                                     <div
                                         style={{
+                                            cursor: column.sortable
+                                                ? "pointer"
+                                                : "default",
                                             justifyContent:
                                                 column.align === "center"
                                                     ? column.align
                                                     : "",
                                         }}
-                                        className={`${s.tableHeadCellWrapper} ${sortConfig?.key === column.key ? s.activeSort : ""}`}
+                                        className={`${s.tableHeadCellWrapper} ${
+                                            sortConfig?.key === column.key
+                                                ? s.activeSort
+                                                : ""
+                                        }`}
                                     >
                                         <span>{column.label}</span>
                                         {sortConfig?.key === column.key && (
@@ -168,8 +125,8 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                     </thead>
 
                     <tbody className={s.tableBody}>
-                        {paginatedData.length > 0 ? (
-                            paginatedData.map((row, rowIndex) => (
+                        {tableData.length > 0 ? (
+                            tableData.map((row: any, rowIndex) => (
                                 <tr key={rowIndex} className={s.row}>
                                     {columns.map((column) => {
                                         if (
@@ -179,7 +136,6 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                             return (
                                                 <td
                                                     key={column.key}
-                                                    style={{}}
                                                     className={s.cell}
                                                 >
                                                     <SpecialCell
@@ -199,7 +155,6 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                             return (
                                                 <td
                                                     key={column.key}
-                                                    style={{}}
                                                     className={s.cell}
                                                 >
                                                     <div
@@ -226,7 +181,19 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                 style={{
                                                     textAlign: column.align,
                                                 }}
-                                                className={`${s.cell} ${column.type === "lite" ? s.textLite : ""} ${column.type === "main" ? s.textMain : ""} ${column.type === "color" ? s.textColor : ""}`}
+                                                className={`${s.cell} ${
+                                                    column.type === "lite"
+                                                        ? s.textLite
+                                                        : ""
+                                                } ${
+                                                    column.type === "main"
+                                                        ? s.textMain
+                                                        : ""
+                                                } ${
+                                                    column.type === "color"
+                                                        ? s.textColor
+                                                        : ""
+                                                }`}
                                             >
                                                 {row[column.key] !==
                                                     undefined &&
@@ -255,8 +222,8 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                     <select
                         value={rowsPerPage}
                         onChange={(e) => {
-                            setRowsPerPage(Number(e.target.value));
-                            setCurrentPage(1);
+                            onRowsPerPageChange(Number(e.target.value));
+                            onPageChange(1);
                         }}
                         className={s.select}
                     >
@@ -268,9 +235,11 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                     </select>
                 </div>
 
+                {isLoading && <span className={s.loading}>Загрузка...</span>}
+
                 <div className={s.pagination}>
                     <button
-                        onClick={() => goToPage(currentPage - 1)}
+                        onClick={() => onPageChange(currentPage - 1)}
                         disabled={currentPage === 1}
                         className={s.paginationButton}
                     >
@@ -280,15 +249,17 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                     {pagesArray.map((page) => (
                         <button
                             key={page}
-                            onClick={() => goToPage(page)}
-                            className={`${s.paginationButton} ${currentPage === page ? s.active : ""}`}
+                            onClick={() => onPageChange(page)}
+                            className={`${s.paginationButton} ${
+                                currentPage === page ? s.active : ""
+                            }`}
                         >
                             {page}
                         </button>
                     ))}
 
                     <button
-                        onClick={() => goToPage(currentPage + 1)}
+                        onClick={() => onPageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
                         className={s.paginationButton}
                     >

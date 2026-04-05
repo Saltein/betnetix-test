@@ -1,4 +1,4 @@
-import { useState, type FunctionComponent } from "react";
+import { useState, useEffect, type FunctionComponent } from "react";
 import { StandardPageLayout } from "../../app/layouts";
 import { DataTable } from "../../shared";
 import { useGetAllPostsQuery } from "../../app/api/posts/postsSliceApi";
@@ -9,12 +9,45 @@ import { ToButton } from "../../shared/ui/ToButton/ToButton";
 interface PostsPageProps {}
 
 export const PostsPage: FunctionComponent<PostsPageProps> = () => {
-    const { data, isLoading, isError } = useGetAllPostsQuery();
-
     const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(7);
+
+    const [sortConfig, setSortConfig] = useState<{
+        key: string;
+        direction: "asc" | "desc";
+    } | null>(null);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setDebouncedSearch(searchQuery);
+        }, 400);
+
+        return () => clearTimeout(timeout);
+    }, [searchQuery]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [debouncedSearch]);
+
+    const { data, isLoading, isFetching, isError } = useGetAllPostsQuery({
+        page,
+        limit,
+        search: debouncedSearch,
+        sortBy: sortConfig?.key,
+        order: sortConfig?.direction,
+    });
 
     const columns: Column[] = [
-        { key: "id", label: "ID", type: "default", width: "90px" },
+        {
+            key: "id",
+            label: "ID",
+            type: "default",
+            width: "90px",
+            sortable: true,
+        },
         { key: "body", label: "Пост", type: "main" },
         { key: "user", label: "Автор", type: "special", width: "152px" },
         {
@@ -23,6 +56,7 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
             type: "default",
             width: "110px",
             align: "center",
+            sortable: true,
         },
         {
             key: "likes",
@@ -47,6 +81,8 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
         },
     ];
 
+    if (isError) return <div>Ошибка загрузки</div>;
+
     return (
         <StandardPageLayout
             title="Публикации"
@@ -56,12 +92,18 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
         >
             <DataTable
                 columns={columns}
-                tableData={data || []}
+                tableData={data?.posts || []}
+                totalCount={data?.total || 0}
+                currentPage={page}
+                onPageChange={setPage}
+                rowsPerPage={limit}
+                onRowsPerPageChange={setLimit}
                 ActionButton={ToButton}
                 actionButtonProps={{ to: "/post" }}
                 SpecialCell={ProfileCell}
-                searchQuery={searchQuery}
-                filterColumn="body"
+                isLoading={isLoading || isFetching}
+                sortConfig={sortConfig}
+                onSortChange={setSortConfig}
             />
         </StandardPageLayout>
     );
