@@ -1,6 +1,9 @@
 import type { FunctionComponent } from "react";
 import s from "./StandardPageLayout.module.scss";
 import { SearchInput } from "../../../shared";
+import { useMediaQuery } from "react-responsive";
+import { is } from "zod/locales";
+import { BodyMobile } from "../../../widgets";
 
 interface StandardPageLayoutProps {
     title: string;
@@ -17,21 +20,29 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
     searchQuery,
     setSearchQuery,
 }) => {
+    const isMobile = useMediaQuery({ maxWidth: 768 });
+
     return (
-        <div className={s.wrapper}>
-            <div className={s.header}>
-                <h1>{title}</h1>
-                <h3>{subtitle}</h3>
+        <div className={`${s.wrapper} ${isMobile ? s.mobile : ""}`}>
+            <div className={`${s.headerWrapper} ${isMobile ? s.mobile : ""}`}>
+                <div className={`${s.header} ${isMobile ? s.mobile : ""}`}>
+                    <h1>{title}</h1>
+                    <h3>{subtitle}</h3>
+                </div>
+
+                <SearchInput
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    isMobile={isMobile}
+                    placeholder="Поиск по публикациям"
+                />
             </div>
 
-            <SearchInput
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                isMobile={false}
-                placeholder="Поиск по публикациям"
-            />
-
-            <div className={s.body}>{children}</div>
+            {isMobile ? (
+                <BodyMobile>{children}</BodyMobile>
+            ) : (
+                <div className={s.body}>{children}</div>
+            )}
         </div>
     );
 };

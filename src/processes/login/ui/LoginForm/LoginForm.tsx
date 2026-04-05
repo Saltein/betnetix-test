@@ -44,7 +44,7 @@ export const LoginForm: FunctionComponent<LoginFormProps> = ({
     if (isMobile) {
         return (
             <Form className={s.formMobile} onSubmit={handleSubmit}>
-                <Header />
+                <Header isLogin />
                 <BodyMobile>
                     <div className={`${s.titles} ${s.titlesMobile}`}>
                         <h2>Панель администратора</h2>

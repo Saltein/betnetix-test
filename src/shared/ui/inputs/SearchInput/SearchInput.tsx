@@ -23,11 +23,11 @@ export const SearchInput: FunctionComponent<SearchInputProps> = ({
             className={s.textField}
             aria-label="search"
         >
-            <SearchIcon className={si.icon} />
+            <SearchIcon className={`${si.icon} ${isMobile ? si.mobile : ""}`} />
             <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`${si.input} ${s.input} ${isMobile ? s.inputMobile : ""}`}
+                className={`${si.input} ${s.input} ${isMobile ? s.inputMobile : ""} ${isMobile ? si.mobile : ""}`}
                 placeholder={placeholder}
             ></Input>
         </TextField>

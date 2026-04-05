@@ -6,11 +6,20 @@
     color: $color-text-11;
 
     position: absolute;
-    top: 11px;
-    left: 10px;
-    padding: 1px;
+    top: 10px;
+    left: 12px;
+
+    &.mobile {
+        top: 6px;
+        left: 10px;
+    }
 }
 
 .input {
     padding-left: 36px;
+
+    &.mobile {
+        border: none;
+        box-shadow: $shadow-0;
+    }
 }

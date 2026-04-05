@@ -8,12 +8,22 @@
     flex-direction: column;
     gap: 18px;
     cursor: pointer;
+
+    &.mobile {
+        background-color: transparent;
+        padding: 0;
+        flex-direction: row;
+    }
 }
 
 .profile {
     display: flex;
     gap: 8px;
     height: 40px;
+
+    &.mobile {
+        height: 32px;
+    }
 }
 
 .avatar {
@@ -22,6 +32,11 @@
     border-radius: 50%;
     background-color: $color-surface;
     color: $color-primary;
+
+    &.mobile {
+        height: 32px;
+        width: 32px;
+    }
 }
 
 .info {
@@ -35,7 +50,17 @@
     font-size: 14px;
     line-height: 20px;
     color: $color-text-1;
-    height: 20px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.mobile {
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+    }
 }
 
 .username {
@@ -45,5 +70,15 @@
     font-size: 14px;
     line-height: 20px;
     color: $color-primary;
-    height: 20px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.mobile {
+        font-family: Inter;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+    }
 }

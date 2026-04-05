@@ -11,6 +11,7 @@ interface NavButtonProps {
     alwaysActive?: boolean;
     justifyContent?: "flex-start" | "flex-end" | "center";
     onClick?: () => void;
+    style?: React.CSSProperties;
 }
 
 export const NavButton: FunctionComponent<NavButtonProps> = ({
@@ -21,12 +22,13 @@ export const NavButton: FunctionComponent<NavButtonProps> = ({
     alwaysActive = false,
     justifyContent = "flex-start",
     onClick,
+    style,
 }) => {
     const navigate = useNavigate();
 
     return (
         <Button
-            style={{ justifyContent: justifyContent }}
+            style={{ justifyContent: justifyContent, ...style }}
             className={`${s.button} ${currentLocation === to || alwaysActive ? s.active : ""}`}
             onClick={() => {
                 navigate(to);
