@@ -227,7 +227,7 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                         }}
                         className={s.select}
                     >
-                        {[5, 7, 10, 15, 25, 50, 100].map((size) => (
+                        {[5, 7, 10, 15, 25].map((size) => (
                             <option key={size} value={size}>
                                 {size}
                             </option>

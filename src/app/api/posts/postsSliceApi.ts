@@ -27,7 +27,7 @@ export const postsApi = createApi({
                 } else {
                     sortByNew = sortBy;
                 }
-                
+
                 const skip = (page - 1) * limit;
 
                 let url = "";

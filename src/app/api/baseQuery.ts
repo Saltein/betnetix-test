@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import type { RefreshTokenResponse } from "./auth/authApiTypes";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "https://test-api.live-server.xyz",
+    baseUrl: "/api",
     prepareHeaders: (headers) => {
         const accessToken = Cookies.get("accessToken");
         if (accessToken) {
