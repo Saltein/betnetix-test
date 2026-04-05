@@ -5,6 +5,7 @@ import { Header, NavPanel, ProfileWidget } from "../../../widgets";
 import { useGetCurrentUserQuery } from "../../api/auth/authSliceApi";
 import Cookies from "js-cookie";
 import { useMediaQuery } from "react-responsive";
+import { NavList } from "../../../widgets/NavPanel/NavList/NavList";
 
 export const MainLayout = () => {
     useGetCurrentUserQuery(undefined, {
@@ -19,8 +20,10 @@ export const MainLayout = () => {
                 <Header logoSize={{ width: 74, height: 18.5 }}>
                     <ProfileWidget isMobile={isMobile} />
                 </Header>
-            
+
                 <Outlet />
+
+                <NavList isMobile={isMobile} />
             </div>
         );
     }
