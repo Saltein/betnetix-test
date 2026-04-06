@@ -1,9 +1,11 @@
 import { type FunctionComponent } from "react";
 import ChevronLeft from "../../assets/icons/leftChevron.svg?react";
 import SortIcon from "../../assets/icons/sort.svg?react";
-
+import OptionIcon from "../../assets/icons/options.svg?react";
 import s from "./DataTable.module.scss";
 import type { SortDirection } from "../../types";
+import { BirthDateCell } from "../../../pages/AdminsPage/BirthDateCell/BirthDateCell";
+import { Button } from "@heroui/react";
 
 export interface Column {
     key: string;
@@ -13,6 +15,7 @@ export interface Column {
         | "main"
         | "color"
         | "special"
+        | "birthDate"
         | "default"
         | "button"
         | "multiline";
@@ -35,6 +38,9 @@ interface TableProps<T> {
     ActionButton?: FunctionComponent<any>;
     actionButtonProps?: any;
     SpecialCell?: FunctionComponent<any>;
+    SpecialCell2?: FunctionComponent<any>;
+    specialCellProps?: any;
+    specialCellProps2?: any;
 
     isLoading?: boolean;
 
@@ -57,6 +63,7 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
     ActionButton,
     actionButtonProps,
     SpecialCell,
+    specialCellProps,
     isLoading,
     sortConfig,
     onSortChange,
@@ -152,13 +159,39 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                                 ? row.user
                                                                 : null
                                                         }
-                                                        avatar={row.user.image}
+                                                        avatar={
+                                                            row?.user?.image ||
+                                                            row?.image
+                                                        }
                                                         firstName={
-                                                            row.user.firstName
+                                                            row?.user
+                                                                ?.firstName ||
+                                                            row?.firstName
                                                         }
                                                         lastName={
-                                                            row.user.lastName
+                                                            row?.user
+                                                                ?.lastName ||
+                                                            row?.lastName
                                                         }
+                                                        fullName={
+                                                            row?.username
+                                                                ? `${row?.firstName} ${row?.lastName} ${row?.maidenName}`
+                                                                : undefined
+                                                        }
+                                                        {...specialCellProps}
+                                                    />
+                                                </td>
+                                            );
+                                        }
+
+                                        if (column.type === "birthDate") {
+                                            return (
+                                                <td
+                                                    key={column.key}
+                                                    className={s.cell}
+                                                >
+                                                    <BirthDateCell
+                                                        date={row.birthDate}
                                                     />
                                                 </td>
                                             );
@@ -181,7 +214,17 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                                 id={row.id}
                                                             />
                                                         ) : (
-                                                            <span>...</span>
+                                                            <Button
+                                                                className={
+                                                                    s.button
+                                                                }
+                                                            >
+                                                                <OptionIcon
+                                                                    className={
+                                                                        s.icon
+                                                                    }
+                                                                />
+                                                            </Button>
                                                         )}
                                                     </div>
                                                 </td>

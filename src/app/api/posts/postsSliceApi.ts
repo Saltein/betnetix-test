@@ -30,7 +30,7 @@ export const postsApi = createApi({
                         posts.map(async (post: any) => {
                             if (!usersCache[post.userId]) {
                                 const userResult = await baseQuery({
-                                    url: `/users/${post.userId}`,
+                                    url: `/users/${post.userId}?select=image,firstName,lastName`,
                                 });
                                 if (userResult.data) {
                                     usersCache[post.userId] = userResult.data;
@@ -39,7 +39,7 @@ export const postsApi = createApi({
                             const user = usersCache[post.userId];
 
                             const commentsResult = await baseQuery({
-                                url: `/posts/${post.id}/comments`,
+                                url: `/posts/${post.id}/comments?select=total`,
                             });
                             const commentsCount =
                                 (commentsResult.data as any)?.total ?? 0;

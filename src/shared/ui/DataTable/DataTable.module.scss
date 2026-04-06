@@ -217,3 +217,19 @@
 .loading {
     color: $color-primary;
 }
+
+.button {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    height: 24px;
+    width: 24px;
+    color: $color-text-7;
+}

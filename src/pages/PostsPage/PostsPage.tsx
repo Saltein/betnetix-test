@@ -77,7 +77,7 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
             align: "center",
         },
     ];
-
+    
     return (
         <StandardPageLayout
             title="Публикации"

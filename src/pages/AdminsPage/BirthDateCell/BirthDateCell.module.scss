@@ -1,0 +1,21 @@
+@use "../../../shared/styles/styles.scss" as *;
+
+.wrapper {
+    display: flex;
+    gap: 4px;
+    align-items: baseline;
+}
+
+.date {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: $color-text-2;
+}
+
+.age {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-text-5;
+}

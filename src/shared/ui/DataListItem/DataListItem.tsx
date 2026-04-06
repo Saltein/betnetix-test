@@ -4,7 +4,7 @@ import s from "./DataListItem.module.scss";
 import ViewsIcon from "../../assets/icons/views.svg?react";
 import LikesIcon from "../../assets/icons/likes.svg?react";
 import CommentsIcon from "../../assets/icons/comments.svg?react";
-import { useGetUserByIdQuery } from "../../../app/api/auth/authSliceApi";
+import { useGetUserByIdQuery } from "../../../app/api/users/usersSliceApi";
 
 interface DataListItemProps {
     data: any;
@@ -97,4 +97,3 @@ export const DataListItem: FunctionComponent<DataListItemProps> = ({
         </div>
     );
 };
-
