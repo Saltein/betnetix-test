@@ -1,6 +1,7 @@
 import type { FunctionComponent } from "react";
 import s from "./ProfileCell.module.scss";
 import { useGetUserByIdQuery } from "../../../app/api/auth/authSliceApi";
+import { includes } from "zod";
 
 export interface ProfileCellProps {
     avatar: string;
@@ -15,7 +16,7 @@ export const ProfileCell: FunctionComponent<ProfileCellProps> = ({
     lastName,
     user,
 }) => {
-    if (user) {
+    if (user && user.hasOwnProperty("id")) {
         const { data: userData } = useGetUserByIdQuery(user.id);
 
         return (
@@ -26,13 +27,14 @@ export const ProfileCell: FunctionComponent<ProfileCellProps> = ({
                 </span>
             </div>
         );
+    } else {
+        return (
+            <div className={s.wrapper}>
+                <img src={avatar} alt="avatar" className={s.avatar} />
+                <span className={s.name}>
+                    {firstName} {lastName?.[0] || ""}.
+                </span>
+            </div>
+        );
     }
-    return (
-        <div className={s.wrapper}>
-            <img src={avatar} alt="avatar" className={s.avatar} />
-            <span className={s.name}>
-                {firstName} {lastName?.[0] || ""}.
-            </span>
-        </div>
-    );
 };
