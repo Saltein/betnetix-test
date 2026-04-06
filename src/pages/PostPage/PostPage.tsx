@@ -41,7 +41,10 @@ export const PostPage: FunctionComponent<PostPageProps> = () => {
         isError,
     } = useGetPostByIdQuery(parseInt(id || ""));
 
-    const { data: commentsData } = useGetPostCommentsQuery(parseInt(id || ""));
+    const { data: commentsData } = useGetPostCommentsQuery({
+        postId: parseInt(id || ""),
+        search: debouncedSearch,
+    });
 
     const columns: Column[] = [
         {

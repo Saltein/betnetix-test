@@ -226,8 +226,43 @@ export const postsApi = createApi({
             query: (id) => `/posts/${id}`,
         }),
 
-        getPostComments: builder.query<GetPostCommentsResponse, number>({
-            query: (id) => `/posts/${id}/comments`,
+        getPostComments: builder.query<
+            GetPostCommentsResponse,
+            { postId: number; search?: string }
+        >({
+            async queryFn({ postId, search }, _api, _extra, baseQuery) {
+                const result = await baseQuery({
+                    url: `/posts/${postId}/comments`,
+                });
+
+                if (result.error) {
+                    return { error: result.error };
+                }
+
+                const data = result.data as GetPostCommentsResponse;
+
+                if (search && search.trim() !== "") {
+                    const filteredComments = data.comments.filter((comment) => {
+                        const searchLower = search.toLowerCase();
+                        return (
+                            comment.body?.toLowerCase().includes(searchLower) ||
+                            comment.user?.username
+                                ?.toLowerCase()
+                                .includes(searchLower)
+                        );
+                    });
+
+                    return {
+                        data: {
+                            ...data,
+                            comments: filteredComments,
+                            total: filteredComments.length,
+                        },
+                    };
+                }
+
+                return { data };
+            },
         }),
     }),
 });
