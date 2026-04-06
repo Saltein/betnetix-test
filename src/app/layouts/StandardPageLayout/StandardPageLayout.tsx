@@ -26,6 +26,8 @@ interface StandardPageLayoutProps {
 
     backButtonLabel?: string;
     backButtonLink?: string;
+
+    searchPlaceholder?: string;
 }
 
 export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
@@ -39,6 +41,7 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
     columns,
     backButtonLabel,
     backButtonLink,
+    searchPlaceholder,
 }) => {
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -52,7 +55,7 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
                         onClick={() => {
                             navigate(backButtonLink || "/");
                         }}
-                        className={s.backButton}
+                        className={`${s.backButton} ${isMobile ? s.mobile : ""}`}
                     >
                         <LeftArrow />
                         {backButtonLabel}
@@ -68,7 +71,7 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                     isMobile={isMobile}
-                    placeholder="Поиск по публикациям"
+                    placeholder={searchPlaceholder || "Поиск"}
                 />
 
                 {isMobile && onSortChange && (

@@ -1,5 +1,9 @@
 @use "../../../shared/styles/styles.scss" as *;
 
+.wrapper {
+    width: 100%;
+}
+
 .dataListItemWrapper {
     display: flex;
     flex-direction: column;
@@ -57,6 +61,13 @@
     font-size: 14px;
     line-height: 20px;
     vertical-align: middle;
+    color: $color-text-2;
+}
+
+.comment {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
     color: $color-text-2;
 }
 

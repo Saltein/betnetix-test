@@ -55,9 +55,6 @@ export const PostPage: FunctionComponent<PostPageProps> = () => {
         { key: "user", label: "Автор", type: "special", width: "152px" },
     ];
 
-    console.log("postData", postData);
-    console.log("commentsData", commentsData);
-
     return (
         <StandardPageLayout
             title="Комментарии к посту"
@@ -66,6 +63,7 @@ export const PostPage: FunctionComponent<PostPageProps> = () => {
             setSearchQuery={setSearchQuery}
             backButtonLabel={"Назад к списку публикаций"}
             backButtonLink="/posts"
+            searchPlaceholder="Поиск по комментариям"
         >
             {isError && <div>Произошла ошибка</div>}
 
@@ -73,9 +71,7 @@ export const PostPage: FunctionComponent<PostPageProps> = () => {
                 <div className={s.mobileWrapper}>
                     <DataList
                         data={commentsData?.comments || []}
-                        type="post"
-                        ActionButton={ToButton}
-                        actionButtonProps={{ to: "/post" }}
+                        type="comment"
                     />
                     {isLoading && <div>Загрузка...</div>}
                 </div>

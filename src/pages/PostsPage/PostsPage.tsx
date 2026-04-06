@@ -87,6 +87,7 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
             sortConfig={sortConfig}
             onSortChange={setSortConfig}
             columns={columns}
+            searchPlaceholder="Поиск по публикациям"
         >
             {isError && <div>Произошла ошибка</div>}
 
