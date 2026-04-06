@@ -12,10 +12,10 @@ import type { SortDirection } from "../../shared/types";
 interface PostsPageProps {}
 
 export const PostsPage: FunctionComponent<PostsPageProps> = () => {
+    const isMobile = useMediaQuery({ maxWidth: 768 });
+
     const [searchQuery, setSearchQuery] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
-
-    const isMobile = useMediaQuery({ maxWidth: 768 });
 
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(7);
@@ -92,6 +92,9 @@ export const PostsPage: FunctionComponent<PostsPageProps> = () => {
             subtitle="Управление публикациями пользователей"
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            sortConfig={sortConfig}
+            onSortChange={setSortConfig}
+            columns={columns}
         >
             {isError && <div>Произошла ошибка</div>}
 

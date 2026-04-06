@@ -62,7 +62,8 @@ export const postsApi = createApi({
                 const fetchPostsBatch = async (
                     skip: number,
                     batchLimit: number,
-                ) => {
+                    retries = 3,
+                ): Promise<{ posts: any[]; total: number }> => {
                     let url = "";
                     if (search) {
                         url = `/posts/search?q=${search}&limit=${batchLimit}&skip=${skip}`;
@@ -74,7 +75,20 @@ export const postsApi = createApi({
                             sortBy === "likes" ? "reactions" : sortBy;
                         url += `&sortBy=${sortKey}&order=${order ?? "asc"}`;
                     }
+
                     const result = await baseQuery({ url });
+
+                    if (
+                        result.error &&
+                        (result.error as any)?.status === 429 &&
+                        retries > 0
+                    ) {
+                        await new Promise((resolve) =>
+                            setTimeout(resolve, 2000),
+                        );
+                        return fetchPostsBatch(skip, batchLimit, retries - 1);
+                    }
+
                     if (result.error) throw result.error;
                     return result.data as { posts: any[]; total: number };
                 };
@@ -144,20 +158,46 @@ export const postsApi = createApi({
                             let loaded = firstBatchLimit;
                             let allPosts = [...enrichedFirstPosts];
                             const backgroundUsersCache = { ...usersCache };
+                            let currentRemaining = remainingLimit;
 
-                            while (remainingLimit > 0) {
-                                const batchSize = Math.min(remainingLimit, 25);
-                                const batch = await fetchPostsBatch(
-                                    nextSkip,
-                                    batchSize,
+                            while (currentRemaining > 0) {
+                                const batchSize = Math.min(
+                                    currentRemaining,
+                                    25,
                                 );
+                                let batch: {
+                                    posts: any[];
+                                    total: number;
+                                } | null = null;
+                                let retries = 3;
+
+                                while (retries > 0 && !batch) {
+                                    try {
+                                        batch = await fetchPostsBatch(
+                                            nextSkip,
+                                            batchSize,
+                                            retries,
+                                        );
+                                    } catch (err) {
+                                        retries--;
+                                        if (retries === 0) throw err;
+                                        await new Promise((resolve) =>
+                                            setTimeout(resolve, 2000),
+                                        );
+                                    }
+                                }
+
+                                if (!batch) {
+                                    throw new Error("Failed to fetch batch");
+                                }
+
                                 const enrichedBatch = await enrichPosts(
                                     batch.posts,
                                     backgroundUsersCache,
                                 );
                                 allPosts = [...allPosts, ...enrichedBatch];
                                 loaded += batchSize;
-                                remainingLimit -= batchSize;
+                                currentRemaining -= batchSize;
                                 nextSkip += batchSize;
 
                                 api.dispatch(

@@ -13,7 +13,10 @@
 
 .headerWrapper {
     &.mobile {
+        display: flex;
+        flex-direction: column;
         padding: 20px;
+        gap: 12px;
     }
 }
 
@@ -25,7 +28,7 @@
 
     &.mobile {
         gap: 4px;
-        margin-bottom: 12px;
+        margin-bottom: 0;
 
         & h1 {
             font-weight: 600;

@@ -40,7 +40,8 @@ const DataListItem: FunctionComponent<DataListItemProps> = ({
                                 alt="avatar"
                             />
                             <span className={s.name}>
-                                {data.user.firstName} {data.user.lastName[0]}.
+                                {data.user.firstName}{" "}
+                                {data.user.lastName[0] || ""}.
                             </span>
                         </div>
                         <div className={s.body}>{data.body}</div>

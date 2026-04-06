@@ -3,3 +3,4 @@ export { SearchInput } from "./ui/inputs/SearchInput/SearchInput";
 export { NavButton } from "./ui/NavButton/NavButton";
 export { DataTable } from "./ui/DataTable/DataTable";
 export { DataList } from "./ui/DataList/DataList";
+export { DropDownInput } from "./ui/inputs/DropDownInput/DropDownInput";

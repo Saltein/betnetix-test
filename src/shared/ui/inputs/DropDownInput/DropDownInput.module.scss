@@ -1,0 +1,43 @@
+@use "../../../styles/styles.scss" as *;
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.input {
+    background-color: $color-surface;
+    flex: 1;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &:focus {
+        border: none;
+        outline: none;
+    }
+
+    &.mobile {
+        border: none;
+        box-shadow: $shadow-0;
+    }
+    color: $color-text-1;
+}
+
+.label {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: $color-text-5;
+}
+
+.icon {
+    position: absolute;
+    right: 8px;
+    height: 16px;
+    width: 16px;
+    color: $color-text-1;
+}
