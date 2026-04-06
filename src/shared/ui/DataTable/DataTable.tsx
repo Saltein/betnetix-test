@@ -1,11 +1,13 @@
-import { type FunctionComponent } from "react";
+import { useState, type FunctionComponent } from "react";
 import ChevronLeft from "../../assets/icons/leftChevron.svg?react";
 import SortIcon from "../../assets/icons/sort.svg?react";
 import OptionIcon from "../../assets/icons/options.svg?react";
 import s from "./DataTable.module.scss";
 import type { SortDirection } from "../../types";
 import { BirthDateCell } from "../../../pages/AdminsPage/BirthDateCell/BirthDateCell";
-import { Button } from "@heroui/react";
+import { Button, Dropdown, Label } from "@heroui/react";
+import PencilIcon from "../../assets/icons/pencil.svg?react";
+import TrashIcon from "../../assets/icons/trash.svg?react";
 
 export interface Column {
     key: string;
@@ -214,17 +216,54 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                                 id={row.id}
                                                             />
                                                         ) : (
-                                                            <Button
-                                                                className={
-                                                                    s.button
-                                                                }
-                                                            >
-                                                                <OptionIcon
+                                                            <Dropdown>
+                                                                <Button
                                                                     className={
-                                                                        s.icon
+                                                                        s.button
                                                                     }
-                                                                />
-                                                            </Button>
+                                                                >
+                                                                    <OptionIcon
+                                                                        className={
+                                                                            s.icon
+                                                                        }
+                                                                    />
+                                                                </Button>
+                                                                <Dropdown.Popover
+                                                                    placement="bottom right"
+                                                                    className={
+                                                                        s.dropDownPopover
+                                                                    }
+                                                                >
+                                                                    <Dropdown.Menu>
+                                                                        <Dropdown.Item
+                                                                            id="edit"
+                                                                            className={
+                                                                                s.dropDownItem
+                                                                            }
+                                                                        >
+                                                                            <PencilIcon
+                                                                                className={
+                                                                                    s.dropDownIcon
+                                                                                }
+                                                                            />
+                                                                            <span>
+                                                                                Редактировать
+                                                                            </span>
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item
+                                                                            id="delete"
+                                                                            className={`${s.dropDownItem} ${s.delete}`}
+                                                                        >
+                                                                            <TrashIcon
+                                                                                className={`${s.dropDownIcon}`}
+                                                                            />
+                                                                            <span>
+                                                                                Удалить
+                                                                            </span>
+                                                                        </Dropdown.Item>
+                                                                    </Dropdown.Menu>
+                                                                </Dropdown.Popover>
+                                                            </Dropdown>
                                                         )}
                                                     </div>
                                                 </td>

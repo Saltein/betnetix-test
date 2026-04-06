@@ -23,5 +23,15 @@ export const useSearchQueryPageLimitAndSort = () => {
         setPage(1);
     }, [debouncedSearch]);
 
-    return { searchQuery, setSearchQuery, debouncedSearch, page, setPage, limit, setLimit, sortConfig, setSortConfig };
+    return {
+        searchQuery,
+        setSearchQuery,
+        debouncedSearch,
+        page,
+        setPage,
+        limit,
+        setLimit,
+        sortConfig,
+        setSortConfig,
+    };
 };
