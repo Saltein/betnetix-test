@@ -22,10 +22,15 @@ export const authApi = createApi({
                 url: "/auth/me",
             }),
         }),
+        getUserById: builder.query<GetCurrentUserResponse, number>({
+            query: (id) => ({
+                url: `/users/${id}`,
+            }),
+        }),
     }),
 });
 
-export const { useLoginMutation, useGetCurrentUserQuery } = authApi;
+export const { useLoginMutation, useGetCurrentUserQuery, useGetUserByIdQuery } = authApi;
 
 export const authReducer = authApi.reducer;
 export const authMiddleware = authApi.middleware;

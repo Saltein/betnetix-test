@@ -47,7 +47,7 @@
     line-height: 20px;
     vertical-align: middle;
     color: $color-text-7;
-    
+
     &.activeSort {
         font-weight: 600;
         font-size: 14px;
@@ -92,9 +92,11 @@
 
 .cell {
     max-width: 200px;
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
     margin-right: 32px;
 
     &:last-child {
@@ -192,6 +194,13 @@
 .textSpecial {
 }
 .textDefault {
+    color: $color-text-2;
+}
+
+.textMultiline {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
 }
 
 .sortIcon {

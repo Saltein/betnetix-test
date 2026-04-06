@@ -12,6 +12,10 @@
 }
 
 .headerWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
     &.mobile {
         display: flex;
         flex-direction: column;
@@ -24,7 +28,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-bottom: 40px;
 
     &.mobile {
         gap: 4px;
@@ -49,4 +52,16 @@
     flex: 1;
     min-height: 0;
     margin-top: 24px;
+}
+
+.backButton {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    gap: 8px;
+
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: $color-text-5;
 }

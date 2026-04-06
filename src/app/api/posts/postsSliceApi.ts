@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "../baseQuery";
+import type { GetPostCommentsResponse, Post } from "./postsApiTypes";
 
 export const postsApi = createApi({
     reducerPath: "postsApi",
@@ -220,9 +221,21 @@ export const postsApi = createApi({
                 return result;
             },
         }),
+
+        getPostById: builder.query<Post, number>({
+            query: (id) => `/posts/${id}`,
+        }),
+
+        getPostComments: builder.query<GetPostCommentsResponse, number>({
+            query: (id) => `/posts/${id}/comments`,
+        }),
     }),
 });
 
-export const { useGetAllPostsQuery } = postsApi;
+export const {
+    useGetAllPostsQuery,
+    useGetPostByIdQuery,
+    useGetPostCommentsQuery,
+} = postsApi;
 export const postsReducer = postsApi.reducer;
 export const postsMiddleware = postsApi.middleware;

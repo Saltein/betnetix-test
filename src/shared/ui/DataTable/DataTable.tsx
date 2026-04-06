@@ -8,7 +8,14 @@ import type { SortDirection } from "../../types";
 export interface Column {
     key: string;
     label: string;
-    type: "lite" | "main" | "color" | "special" | "default" | "button";
+    type:
+        | "lite"
+        | "main"
+        | "color"
+        | "special"
+        | "default"
+        | "button"
+        | "multiline";
     width?: string;
     align?: "left" | "center" | "right";
     sortable?: boolean;
@@ -140,6 +147,11 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                     className={s.cell}
                                                 >
                                                     <SpecialCell
+                                                        user={
+                                                            row.user
+                                                                ? row.user
+                                                                : null
+                                                        }
                                                         avatar={row.user.image}
                                                         firstName={
                                                             row.user.firstName
@@ -193,6 +205,10 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                                                 } ${
                                                     column.type === "color"
                                                         ? s.textColor
+                                                        : ""
+                                                } ${
+                                                    column.type === "multiline"
+                                                        ? s.textMultiline
                                                         : ""
                                                 }`}
                                             >

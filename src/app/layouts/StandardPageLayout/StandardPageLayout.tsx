@@ -5,6 +5,8 @@ import { useMediaQuery } from "react-responsive";
 import { BodyMobile } from "../../../widgets";
 import type { SortDirection } from "../../../shared/types";
 import type { Column } from "../../../shared/ui/DataTable/DataTable";
+import { useNavigate } from "react-router-dom";
+import LeftArrow from "../../../shared/assets/icons/leftArrow.svg?react";
 
 interface StandardPageLayoutProps {
     title: string;
@@ -21,6 +23,9 @@ interface StandardPageLayoutProps {
     onSortChange?: (config: { key: string; direction: SortDirection }) => void;
 
     columns?: Column[];
+
+    backButtonLabel?: string;
+    backButtonLink?: string;
 }
 
 export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
@@ -32,12 +37,28 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
     sortConfig,
     onSortChange,
     columns,
+    backButtonLabel,
+    backButtonLink,
 }) => {
     const isMobile = useMediaQuery({ maxWidth: 768 });
+
+    const navigate = useNavigate();
 
     return (
         <div className={`${s.wrapper} ${isMobile ? s.mobile : ""}`}>
             <div className={`${s.headerWrapper} ${isMobile ? s.mobile : ""}`}>
+                {backButtonLabel && (
+                    <div
+                        onClick={() => {
+                            navigate(backButtonLink || "/");
+                        }}
+                        className={s.backButton}
+                    >
+                        <LeftArrow />
+                        {backButtonLabel}
+                    </div>
+                )}
+
                 <div className={`${s.header} ${isMobile ? s.mobile : ""}`}>
                     <h1>{title}</h1>
                     <h3>{subtitle}</h3>

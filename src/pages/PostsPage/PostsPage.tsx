@@ -1,41 +1,33 @@
-import { useState, useEffect, type FunctionComponent } from "react";
+import { type FunctionComponent } from "react";
 import { StandardPageLayout } from "../../app/layouts";
-import { DataList, DataTable } from "../../shared";
+import {
+    DataList,
+    DataTable,
+    useSearchQueryPageLimitAndSort,
+    ToButton,
+} from "../../shared";
 import { useGetAllPostsQuery } from "../../app/api/posts/postsSliceApi";
 import type { Column } from "../../shared/ui/DataTable/DataTable";
 import { ProfileCell } from "./ProfileCell/ProfileCell";
-import { ToButton } from "../../shared/ui/ToButton/ToButton";
 import { useMediaQuery } from "react-responsive";
 import s from "./PostsPage.module.scss";
-import type { SortDirection } from "../../shared/types";
 
 interface PostsPageProps {}
 
 export const PostsPage: FunctionComponent<PostsPageProps> = () => {
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
-    const [searchQuery, setSearchQuery] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
-
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(7);
-
-    const [sortConfig, setSortConfig] = useState<{
-        key: string;
-        direction: SortDirection;
-    } | null>(null);
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setDebouncedSearch(searchQuery);
-        }, 400);
-
-        return () => clearTimeout(timeout);
-    }, [searchQuery]);
-
-    useEffect(() => {
-        setPage(1);
-    }, [debouncedSearch]);
+    const {
+        searchQuery,
+        setSearchQuery,
+        debouncedSearch,
+        page,
+        setPage,
+        limit,
+        setLimit,
+        sortConfig,
+        setSortConfig,
+    } = useSearchQueryPageLimitAndSort();
 
     const { data, isLoading, isFetching, isError } = useGetAllPostsQuery({
         page,

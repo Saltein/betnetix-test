@@ -20,3 +20,18 @@ export interface GetAllPostResponse {
         lastName: string;
     };
 }
+
+type Comment = {
+    id: number;
+    body: string;
+    postId: number;
+    likes: number;
+    user: { id: number; username: string; fullName: string };
+};
+
+export interface GetPostCommentsResponse {
+    comments: Comment[];
+    total: number;
+    skip: number;
+    limit: number;
+}
