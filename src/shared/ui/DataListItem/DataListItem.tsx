@@ -1,10 +1,15 @@
-import type { FunctionComponent } from "react";
+import { useEffect, type FunctionComponent } from "react";
 import s from "./DataListItem.module.scss";
 
 import ViewsIcon from "../../assets/icons/views.svg?react";
 import LikesIcon from "../../assets/icons/likes.svg?react";
 import CommentsIcon from "../../assets/icons/comments.svg?react";
-import { useGetUserByIdQuery } from "../../../app/api/users/usersSliceApi";
+import {
+    useDeleteUserMutation,
+    useGetUserByIdQuery,
+} from "../../../app/api/users/usersSliceApi";
+import DropdownButton from "../DataTable/DropdownButton/DropdownButton";
+import { BirthDateCell } from "../../../pages/AdminsPage/BirthDateCell/BirthDateCell";
 
 interface DataListItemProps {
     data: any;
@@ -21,8 +26,29 @@ export const DataListItem: FunctionComponent<DataListItemProps> = ({
     actionButtonProps,
 }) => {
     const { data: userData } = useGetUserByIdQuery(
-        type === "comment" && data.user.id,
+        type === "comment" && data.user.id ? data.user.id : data.id,
     );
+
+    const [
+        deleteUser,
+        { data: deletedUser, isSuccess: isDeleted, error: deleteError },
+    ] = useDeleteUserMutation();
+
+    useEffect(() => {
+        if (isDeleted) {
+            console.log("user deleted");
+        }
+
+        if (deleteError) {
+            console.log("error deleting user");
+        }
+    }, [isDeleted, deleteError]);
+
+    useEffect(() => {
+        if (deletedUser) {
+            console.log("user deleted");
+        }
+    }, [deletedUser]);
 
     return (
         <div className={s.dataListItemWrapper}>
@@ -71,7 +97,49 @@ export const DataListItem: FunctionComponent<DataListItemProps> = ({
                 </>
             )}
 
-            {type === "user" && <div>user</div>}
+            {type === "user" && (
+                <div className={s.userCard}>
+                    <div className={s.header}>
+                        <div className={s.user}>
+                            <img
+                                className={s.avatar}
+                                src={userData?.image}
+                                alt="avatar"
+                            />
+                        </div>
+                        <DropdownButton
+                            onDelete={() => {
+                                console.log("delete user", data.id);
+                                deleteUser(data.id);
+                            }}
+                        />
+                    </div>
+                    <span className={`${s.name} ${s.bold}`}>
+                        {userData?.firstName} {userData?.lastName}{" "}
+                        {userData?.maidenName}
+                    </span>
+                    <span className={s.email}>{userData?.email}</span>
+
+                    <div className={s.dateGender}>
+                        <div className={`${s.con} ${s.birth}`}>
+                            <span className={s.label}>Дата рождения</span>
+                            <BirthDateCell
+                                date={userData?.birthDate || "1900-01-01"}
+                                fontSize="14px"
+                            />
+                        </div>
+
+                        <div className={`${s.con} ${s.gender}`}>
+                            <span className={s.label}>Пол</span>
+                            <span className={s.value}>
+                                {userData?.gender === "male"
+                                    ? "Мужской"
+                                    : "Женский"}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {type === "comment" && (
                 <div className={s.wrapper}>

@@ -106,7 +106,7 @@ export const AdminsPage: FunctionComponent<AdminsPageProps> = () => {
 
             {isMobile ? (
                 <div className={s.mobileWrapper}>
-                    <DataList data={adminsData?.users || []} type="comment" />
+                    <DataList data={adminsData?.users || []} type="user" />
                     {isLoading && <div>Загрузка...</div>}
                 </div>
             ) : (

@@ -16,6 +16,13 @@
     }
 }
 
+.userCard {
+    display: flex;
+    flex-direction: column;
+    padding: 0 8px;
+    gap: 8px;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -54,6 +61,12 @@
     line-height: 20px;
     vertical-align: middle;
     color: $color-text-2;
+
+    &.bold {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+    }
 }
 
 .body {
@@ -97,4 +110,39 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.email {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-text-blue-3;
+}
+
+.dateGender {
+    display: flex;
+    justify-content: space-between;
+}
+
+.label {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: $color-text-5;
+}
+
+.con {
+    display: flex;
+    flex-direction: column;
+
+    &.gender {
+        width: 102px;
+    }
+}
+
+.value {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-text-2;
 }

@@ -2,10 +2,8 @@ import { useEffect, type FunctionComponent } from "react";
 import { BirthDateCell } from "../../../../pages/AdminsPage/BirthDateCell/BirthDateCell";
 import { Button, Dropdown } from "@heroui/react";
 import s from "./DataTableRow.module.scss";
-import OptionIcon from "../../../assets/icons/options.svg?react";
-import PencilIcon from "../../../assets/icons/pencil.svg?react";
-import TrashIcon from "../../../assets/icons/trash.svg?react";
 import { useDeleteUserMutation } from "../../../../app/api/users/usersSliceApi";
+import DropdownButton from "../DropdownButton/DropdownButton";
 
 interface DataTableRowProps {
     row: any;
@@ -94,41 +92,11 @@ const DataTableRow: FunctionComponent<DataTableRowProps> = ({
                                         id={row.id}
                                     />
                                 ) : (
-                                    <Dropdown>
-                                        <Button className={s.button}>
-                                            <OptionIcon className={s.icon} />
-                                        </Button>
-                                        <Dropdown.Popover
-                                            placement="bottom right"
-                                            className={s.dropDownPopover}
-                                        >
-                                            <Dropdown.Menu>
-                                                <Dropdown.Item
-                                                    id="edit"
-                                                    className={s.dropDownItem}
-                                                >
-                                                    <PencilIcon
-                                                        className={
-                                                            s.dropDownIcon
-                                                        }
-                                                    />
-                                                    <span>Редактировать</span>
-                                                </Dropdown.Item>
-                                                <Dropdown.Item
-                                                    id="delete"
-                                                    className={`${s.dropDownItem} ${s.delete}`}
-                                                    onClick={() =>
-                                                        handleDeleteUser(row.id)
-                                                    }
-                                                >
-                                                    <TrashIcon
-                                                        className={`${s.dropDownIcon}`}
-                                                    />
-                                                    <span>Удалить</span>
-                                                </Dropdown.Item>
-                                            </Dropdown.Menu>
-                                        </Dropdown.Popover>
-                                    </Dropdown>
+                                    <DropdownButton
+                                        onDelete={() =>
+                                            handleDeleteUser(row.id)
+                                        }
+                                    />
                                 )}
                             </div>
                         </td>

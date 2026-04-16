@@ -4,10 +4,12 @@ import s from "./BirthDateCell.module.scss";
 
 interface BirthDateCellProps {
     date: string;
+    fontSize?: string;
 }
 
 export const BirthDateCell: FunctionComponent<BirthDateCellProps> = ({
     date,
+    fontSize,
 }) => {
     const [year, month, day] = date.split("-");
     const formattedDate = `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year}`;
@@ -42,7 +44,9 @@ export const BirthDateCell: FunctionComponent<BirthDateCellProps> = ({
 
     return (
         <div className={s.wrapper}>
-            <span className={s.date}>{formattedDate}</span>
+            <span className={s.date} style={{ fontSize: fontSize }}>
+                {formattedDate}
+            </span>
             <span className={s.age}>({age})</span>
         </div>
     );

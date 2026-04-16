@@ -127,6 +127,7 @@ export const DataTable: FunctionComponent<TableProps<any>> = ({
                         {tableData.length > 0 ? (
                             tableData.map((row: any, rowIndex) => (
                                 <DataTableRow
+                                    key={row.id}
                                     row={row}
                                     rowIndex={rowIndex}
                                     columns={columns}
