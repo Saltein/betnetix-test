@@ -181,6 +181,13 @@ export const usersApi = createApi({
                 return result;
             },
         }),
+
+        deleteUser: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/users/${id}`,
+                method: "DELETE",
+            }),
+        }),
     }),
 });
 
@@ -189,6 +196,7 @@ export const {
     useGetAllUsersQuery,
     useGetUserByIdQuery,
     useGetAllUsersPaginatedQuery,
+    useDeleteUserMutation,
 } = usersApi;
 
 export const usersReducer = usersApi.reducer;

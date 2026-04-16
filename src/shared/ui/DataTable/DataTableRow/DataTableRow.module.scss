@@ -1,0 +1,88 @@
+@use "../../../styles/styles.scss" as *;
+
+.row {
+    border-bottom: 1px solid $color-border-14;
+    height: 64px;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.row td:first-child {
+    padding-left: 24px;
+}
+
+.row td:last-child {
+    padding-right: 0px;
+}
+
+.cell {
+    max-width: 200px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    margin-right: 32px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    height: 24px;
+    width: 24px;
+    color: $color-text-7;
+}
+
+.dropDownPopover {
+    width: fit-content;
+    min-width: unset;
+    position: absolute;
+    border-radius: 12px;
+    box-shadow: $shadows-12;
+}
+
+.dropDownIcon {
+    height: 20px;
+    width: 20px;
+}
+
+.dropDownItem {
+    height: 40px;
+    width: 100%;
+    padding: 10px 16px;
+
+    border-bottom: 1px solid $color-border-14;
+    border-radius: 0;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-text-3;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &.delete {
+        color: $color-red;
+    }
+}
