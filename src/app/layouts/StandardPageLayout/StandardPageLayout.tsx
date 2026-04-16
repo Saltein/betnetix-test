@@ -7,6 +7,7 @@ import type { SortDirection } from "../../../shared/types";
 import type { Column } from "../../../shared/ui/DataTable/DataTable";
 import { useNavigate } from "react-router-dom";
 import LeftArrow from "../../../shared/assets/icons/leftArrow.svg?react";
+import { Button } from "@heroui/react";
 
 interface StandardPageLayoutProps {
     title: string;
@@ -28,6 +29,11 @@ interface StandardPageLayoutProps {
     backButtonLink?: string;
 
     searchPlaceholder?: string;
+
+    actionButtonProps?: {};
+    actionButtonLabel?: string;
+    actionButtonOnClick?: () => void;
+    ActionButtonIcon?: React.ReactNode;
 }
 
 export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
@@ -42,6 +48,10 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
     backButtonLabel,
     backButtonLink,
     searchPlaceholder,
+    actionButtonProps,
+    actionButtonLabel,
+    actionButtonOnClick,
+    ActionButtonIcon,
 }) => {
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -49,7 +59,7 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
 
     return (
         <div className={`${s.wrapper} ${isMobile ? s.mobile : ""}`}>
-            <div className={`${s.headerWrapper} ${isMobile ? s.mobile : ""}`}>
+            <div className={`${s.headerWrapperWrapper} ${isMobile ? s.mobile : ""}`}>
                 {backButtonLabel && (
                     <div
                         onClick={() => {
@@ -62,9 +72,23 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
                     </div>
                 )}
 
-                <div className={`${s.header} ${isMobile ? s.mobile : ""}`}>
-                    <h1>{title}</h1>
-                    <h3>{subtitle}</h3>
+                <div
+                    className={`${s.headerWrapper} ${isMobile ? s.mobile : ""}`}
+                >
+                    <div className={`${s.header} ${isMobile ? s.mobile : ""}`}>
+                        <h1>{title}</h1>
+                        <h3>{subtitle}</h3>
+                    </div>
+                    {actionButtonLabel && (
+                        <Button
+                            {...actionButtonProps}
+                            onClick={actionButtonOnClick}
+                            className={`${s.actionButton} ${isMobile ? s.mobile : ""}`}
+                        >
+                            {ActionButtonIcon && ActionButtonIcon}
+                            {actionButtonLabel && actionButtonLabel}
+                        </Button>
+                    )}
                 </div>
 
                 <SearchInput
