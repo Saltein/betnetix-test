@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "../baseQuery";
-import type { GetUsersResponse, User } from "./usersApiTypes";
+import type { AddUserParams, GetUsersResponse, User } from "./usersApiTypes";
 
 export const usersApi = createApi({
     reducerPath: "usersApi",
@@ -188,6 +188,22 @@ export const usersApi = createApi({
                 method: "DELETE",
             }),
         }),
+
+        addUser: builder.mutation<void, AddUserParams>({
+            query: (user) => ({
+                url: "/users/add",
+                method: "POST",
+                body: user,
+            }),
+        }),
+
+        updateUser: builder.mutation({
+            query: ({ id, ...patch }) => ({
+                url: `/users/${id}`,
+                method: "PATCH",
+                body: patch,
+            }),
+        }),
     }),
 });
 
@@ -197,6 +213,8 @@ export const {
     useGetUserByIdQuery,
     useGetAllUsersPaginatedQuery,
     useDeleteUserMutation,
+    useAddUserMutation,
+    useUpdateUserMutation,
 } = usersApi;
 
 export const usersReducer = usersApi.reducer;

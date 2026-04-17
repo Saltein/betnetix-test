@@ -107,7 +107,7 @@ export const AdminsPage: FunctionComponent<AdminsPageProps> = () => {
             ActionButtonIcon={
                 <PlusIcon style={{ height: "20px", width: "20px" }} />
             }
-            modalChildren={<EditUserForm />}
+            modalChildren={<EditUserForm type="add" />}
             modalTitle="Добавление администратора"
         >
             {isError && <div>Произошла ошибка</div>}

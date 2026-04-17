@@ -9,6 +9,9 @@ interface DefaultInputProps {
     label: string;
     placeholder: string;
     isMobile?: boolean;
+
+    value?: string;
+    onChange?: (value: string) => void;
 }
 
 export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
@@ -18,11 +21,26 @@ export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
     label,
     placeholder,
     isMobile,
+    value,
+    onChange,
 }) => {
     if (type === "date")
         return (
-            <DateField name={name} className={s.textField}>
-                <Label className={`${s.label}`}>{label}</Label>
+            <DateField
+                name={name}
+                className={s.textField}
+                onChange={(date) => {
+                    if (!onChange) return;
+
+                    const formatted = date
+                        ? `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`
+                        : "";
+
+                    onChange(formatted);
+                }}
+            >
+                <Label className={s.label}>{label}</Label>
+
                 <DateField.Input
                     className={`${s.input} ${isMobile ? s.inputMobile : ""}`}
                 >
@@ -39,6 +57,8 @@ export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
         >
             <Label className={`${s.label}`}>{label}</Label>
             <Input
+                value={value}
+                onChange={(e) => onChange?.(e.target.value)}
                 className={`${s.input} ${isMobile ? s.inputMobile : ""}`}
                 placeholder={placeholder}
             />

@@ -116,9 +116,11 @@
 
 .dialogModal {
     display: flex;
-    padding: 60px;
+    padding: 60px 52px;
     gap: 40px;
+
     width: 565px;
+    max-width: 90vw; 
 }
 
 .headerModal {

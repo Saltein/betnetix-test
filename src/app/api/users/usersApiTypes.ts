@@ -68,3 +68,11 @@ export interface GetUsersResponse {
     skip: number;
     limit: number;
 }
+
+export interface AddUserParams {
+    firstName: string;
+    lastName: string;
+    maidenName: string;
+    email: string;
+    birthDate: string;
+}
