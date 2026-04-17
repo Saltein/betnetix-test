@@ -108,10 +108,7 @@ export const DataListItem: FunctionComponent<DataListItemProps> = ({
                             />
                         </div>
                         <DropdownButton
-                            onDelete={() => {
-                                console.log("delete user", data.id);
-                                deleteUser(data.id);
-                            }}
+                            userId={userData!.id}
                         />
                     </div>
                     <span className={`${s.name} ${s.bold}`}>

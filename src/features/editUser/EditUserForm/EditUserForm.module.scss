@@ -6,10 +6,35 @@
     align-items: center;
     gap: 28px;
     padding: 0 4px;
+
+    &.mobile {
+        gap: 16px;
+    }
 }
 
 .avatarWrapper {
     margin-bottom: 12px;
+}
+
+.avatar {
+    height: 120px;
+    width: 120px;
+    background-color: $color-primary-extra-lite;
+    border-radius: 50%;
+
+    &.mobile {
+        height: 60px;
+        width: 60px;
+    }
+}
+
+.avatarIconMobile {
+    height: 60px;
+    width: 60px;
+}
+
+.avatarIcon {
+    flex-shrink: 0;
 }
 
 .button {
@@ -21,11 +46,9 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
-}
 
-.avatar {
-    height: 120px;
-    width: 120px;
-    background-color: $color-primary-extra-lite;
-    border-radius: 50%;
+    &.mobile {
+        height: 40px;
+        margin-top: 4px;
+    }
 }

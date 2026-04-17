@@ -7,12 +7,14 @@ import TrashIcon from "../../../assets/icons/trash.svg?react";
 import { useDeleteUserMutation } from "../../../../app/api/users/usersSliceApi";
 import { DefaultModal } from "../../DefaultModal/DefaultModal";
 import { EditUserForm } from "../../../../features";
+import { useMediaQuery } from "react-responsive";
 
 interface DropdownButtonProps {
     userId: number;
 }
 
 const DropdownButton: FunctionComponent<DropdownButtonProps> = ({ userId }) => {
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
     const [isEditOpen, setIsEditOpen] = useState(false);
 
     const [
@@ -93,6 +95,7 @@ const DropdownButton: FunctionComponent<DropdownButtonProps> = ({ userId }) => {
                 onOpenChange={setIsEditOpen}
                 triggerButton={false}
                 modalChildren={<EditUserForm type="edit" userId={userId} />}
+                isMobile={isMobile}
             />
         </Dropdown>
     );

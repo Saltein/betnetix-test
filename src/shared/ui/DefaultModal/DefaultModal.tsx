@@ -61,16 +61,24 @@ export const DefaultModal: FunctionComponent<DefaultModalProps> = ({
             )}
 
             <Modal.Backdrop className={s.backdropModal}>
-                <Modal.Container className={s.containerModal}>
-                    <Modal.Dialog className={s.dialogModal}>
+                <Modal.Container
+                    className={`${s.containerModal} ${isMobile ? s.mobile : ""}`}
+                >
+                    <Modal.Dialog
+                        className={`${s.dialogModal} ${isMobile ? s.mobile : ""}`}
+                    >
                         <button
-                            className={s.customClose}
+                            className={`${s.customClose} ${isMobile ? s.mobile : ""}`}
                             onClick={() => setOpen(false)}
                         >
-                            <CloseIcon />
+                            <CloseIcon
+                                className={`${s.closeIcon} ${isMobile ? s.mobile : ""}`}
+                            />
                         </button>
 
-                        <Modal.Header className={s.headerModal}>
+                        <Modal.Header
+                            className={`${s.headerModal} ${isMobile ? s.mobile : ""}`}
+                        >
                             {modalTitle}
                         </Modal.Header>
 

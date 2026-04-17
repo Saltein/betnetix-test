@@ -1,6 +1,7 @@
 import { useEffect, useState, type FunctionComponent } from "react";
 import s from "./EditUserForm.module.scss";
 import AvatarIcon from "../../../shared/assets/icons/avatar120.svg?react";
+import AvatarIconMobile from "../../../shared/assets/icons/avatar60.svg?react";
 import { DefaultInput } from "../../../shared";
 import { Button } from "@heroui/react";
 import {
@@ -8,6 +9,7 @@ import {
     useGetUserByIdQuery,
     useUpdateUserMutation,
 } from "../../../app/api/users/usersSliceApi";
+import { useMediaQuery } from "react-responsive";
 
 interface EditUserFormProps {
     type: "add" | "edit";
@@ -24,6 +26,8 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = ({
     type,
     userId,
 }) => {
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
     const { data: userData } = useGetUserByIdQuery(userId ? userId : 0);
 
     const [formData, setFormData] = useState<FormData>({
@@ -115,15 +119,28 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = ({
                 birthDate: userData.birthDate || "",
             });
         }
+
+        console.log("userData", userData);
     }, [userData]);
 
     return (
-        <div className={s.editFormWrapper}>
-            <div className={s.avatarWrapper}>
+        <div className={`${s.editFormWrapper} ${isMobile ? s.mobile : ""}`}>
+            <div className={`${s.avatarWrapper} ${isMobile ? s.mobile : ""}`}>
                 {type === "add" ? (
-                    <AvatarIcon />
+                    isMobile ? (
+                        <AvatarIconMobile
+                            className={`${s.avatar} ${isMobile ? s.mobile : ""}`}
+                        />
+                    ) : (
+                        <AvatarIcon
+                            className={`${s.avatar} ${isMobile ? s.mobile : ""}`}
+                        />
+                    )
                 ) : (
-                    <img src={userData?.image} className={s.avatar} />
+                    <img
+                        src={userData?.image}
+                        className={`${s.avatar} ${isMobile ? s.mobile : ""}`}
+                    />
                 )}
             </div>
 
@@ -138,6 +155,7 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = ({
                     setSuccess(false);
                     setFormData({ ...formData, name: value });
                 }}
+                isMobile={isMobile}
             />
 
             <DefaultInput
@@ -151,6 +169,7 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = ({
                     setSuccess(false);
                     setFormData({ ...formData, email: value });
                 }}
+                isMobile={isMobile}
             />
 
             <DefaultInput
@@ -164,6 +183,7 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = ({
                     setSuccess(false);
                     setFormData({ ...formData, birthDate: value });
                 }}
+                isMobile={isMobile}
             />
 
             {error && (
@@ -177,7 +197,10 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = ({
                 </span>
             )}
 
-            <Button className={s.button} onClick={handleSubmit}>
+            <Button
+                className={`${s.button} ${isMobile ? s.mobile : ""}`}
+                onClick={handleSubmit}
+            >
                 {type === "add" ? "Сохранить" : "Сохранить изменения"}
             </Button>
         </div>
