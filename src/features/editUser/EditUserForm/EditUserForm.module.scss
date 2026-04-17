@@ -22,3 +22,10 @@
     font-size: 16px;
     line-height: 24px;
 }
+
+.avatar {
+    height: 120px;
+    width: 120px;
+    background-color: $color-primary-extra-lite;
+    border-radius: 50%;
+}

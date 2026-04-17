@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithReauth } from "../baseQuery";
-import type { AddUserParams, GetUsersResponse, User } from "./usersApiTypes";
+import type { AddUserParams, GetUsersResponse, UpdateUserParams, User } from "./usersApiTypes";
 
 export const usersApi = createApi({
     reducerPath: "usersApi",
@@ -197,7 +197,7 @@ export const usersApi = createApi({
             }),
         }),
 
-        updateUser: builder.mutation({
+        updateUser: builder.mutation<void, UpdateUserParams>({
             query: ({ id, ...patch }) => ({
                 url: `/users/${id}`,
                 method: "PATCH",

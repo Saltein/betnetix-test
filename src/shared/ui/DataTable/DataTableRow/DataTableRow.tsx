@@ -24,32 +24,6 @@ const DataTableRow: FunctionComponent<DataTableRowProps> = ({
     SpecialCell,
     specialCellProps,
 }) => {
-    const [
-        deleteUser,
-        { data: deletedUser, isSuccess: isDeleted, error: deleteError },
-    ] = useDeleteUserMutation();
-
-    const handleDeleteUser = (id: number) => {
-        console.log(`delete user ${id}`);
-        deleteUser(id);
-    };
-
-    useEffect(() => {
-        if (isDeleted) {
-            console.log("user deleted");
-        }
-
-        if (deleteError) {
-            console.log("error deleting user");
-        }
-    }, [isDeleted, deleteError]);
-
-    useEffect(() => {
-        if (deletedUser) {
-            console.log("user deleted");
-        }
-    }, [deletedUser]);
-
     return (
         <tr key={rowIndex} className={s.row}>
             {columns.map((column) => {
@@ -93,9 +67,7 @@ const DataTableRow: FunctionComponent<DataTableRowProps> = ({
                                     />
                                 ) : (
                                     <DropdownButton
-                                        onDelete={() =>
-                                            handleDeleteUser(row.id)
-                                        }
+                                        userId={row.id}
                                     />
                                 )}
                             </div>

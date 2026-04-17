@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import s from "./StandardPageLayout.module.scss";
-import { DropDownInput, SearchInput } from "../../../shared";
+import { DefaultModal, DropDownInput, SearchInput } from "../../../shared";
 import { useMediaQuery } from "react-responsive";
 import { BodyMobile } from "../../../widgets";
 import type { SortDirection } from "../../../shared/types";
@@ -85,26 +85,15 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
                         <h3>{subtitle}</h3>
                     </div>
                     {actionButtonLabel && (
-                        <Modal>
-                            <Button
-                                {...actionButtonProps}
-                                className={`${s.actionButton} ${isMobile ? s.mobile : ""}`}
-                            >
-                                {ActionButtonIcon && ActionButtonIcon}
-                                {actionButtonLabel && actionButtonLabel}
-                            </Button>
-                            <Modal.Backdrop className={s.backdropModal}>
-                                <Modal.Container className={s.containerModal}>
-                                    <Modal.Dialog className={s.dialogModal}>
-                                        <Modal.CloseTrigger />
-                                        <Modal.Header className={s.headerModal}>
-                                            {modalTitle}
-                                        </Modal.Header>
-                                        <Modal.Body>{modalChildren}</Modal.Body>
-                                    </Modal.Dialog>
-                                </Modal.Container>
-                            </Modal.Backdrop>
-                        </Modal>
+                        <DefaultModal
+                            actionButtonLabel={actionButtonLabel}
+                            actionButtonProps={actionButtonProps}
+                            ActionButtonIcon={ActionButtonIcon}
+                            modalTitle={modalTitle}
+                            modalChildren={modalChildren}
+                            isMobile={isMobile}
+                            triggerButton
+                        />
                     )}
                 </div>
 

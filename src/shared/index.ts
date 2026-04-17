@@ -6,3 +6,4 @@ export { DataList } from "./ui/DataList/DataList";
 export { DropDownInput } from "./ui/inputs/DropDownInput/DropDownInput";
 export { useSearchQueryPageLimitAndSort } from "./hooks/useSearchQueryPageLimitAndSort";
 export { ToButton } from "./ui/ToButton/ToButton";
+export { DefaultModal } from "./ui/DefaultModal/DefaultModal";

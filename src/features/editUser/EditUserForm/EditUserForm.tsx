@@ -3,11 +3,15 @@ import s from "./EditUserForm.module.scss";
 import AvatarIcon from "../../../shared/assets/icons/avatar120.svg?react";
 import { DefaultInput } from "../../../shared";
 import { Button } from "@heroui/react";
-import { useAddUserMutation } from "../../../app/api/users/usersSliceApi";
+import {
+    useAddUserMutation,
+    useGetUserByIdQuery,
+    useUpdateUserMutation,
+} from "../../../app/api/users/usersSliceApi";
 
 interface EditUserFormProps {
     type: "add" | "edit";
-    userId?: string;
+    userId?: number;
 }
 
 interface FormData {
@@ -16,7 +20,12 @@ interface FormData {
     birthDate: string;
 }
 
-export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
+export const EditUserForm: FunctionComponent<EditUserFormProps> = ({
+    type,
+    userId,
+}) => {
+    const { data: userData } = useGetUserByIdQuery(userId ? userId : 0);
+
     const [formData, setFormData] = useState<FormData>({
         name: "",
         email: "",
@@ -33,8 +42,8 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
         return inputDate > now;
     };
 
-    const [addUser] =
-        useAddUserMutation();
+    const [addUser] = useAddUserMutation();
+    const [updateUser] = useUpdateUserMutation();
 
     const handleSubmit = async () => {
         setError(null);
@@ -60,33 +69,62 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
 
         const nameParts = formData.name.trim().split(/\s+/);
 
+        let action;
+        if (type === "add") {
+            action = addUser;
+        } else {
+            action = updateUser;
+        }
+
         try {
-            const result = await addUser({
+            const result = await action({
                 firstName: nameParts[0] || "",
                 lastName: nameParts[1] || "",
                 maidenName: nameParts[2] || "",
                 email: formData.email,
                 birthDate: formData.birthDate,
+                id: userId || 0,
             }).unwrap();
 
-            console.log("Пользователь добавлен:", result);
+            console.log(
+                type === "add"
+                    ? "Пользователь добавлен"
+                    : "Пользователь обновлен:",
+                result,
+            );
             setSuccess(true);
 
-            setFormData({
-                name: "",
-                email: "",
-                birthDate: "",
-            });
+            if (type === "add") {
+                setFormData({
+                    name: "",
+                    email: "",
+                    birthDate: "",
+                });
+            }
         } catch (e) {
             setError("Ошибка при добавлении пользователя");
             console.error(e);
         }
     };
 
+    useEffect(() => {
+        if (userData) {
+            setFormData({
+                name: `${userData.firstName} ${userData.lastName} ${userData.maidenName}`.trim(),
+                email: userData.email,
+                birthDate: userData.birthDate || "",
+            });
+        }
+    }, [userData]);
+
     return (
         <div className={s.editFormWrapper}>
             <div className={s.avatarWrapper}>
-                <AvatarIcon />
+                {type === "add" ? (
+                    <AvatarIcon />
+                ) : (
+                    <img src={userData?.image} className={s.avatar} />
+                )}
             </div>
 
             <DefaultInput
@@ -132,11 +170,15 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
                 <span style={{ fontSize: "16px", color: "red" }}>{error}</span>
             )}
             {success && (
-                <span style={{ fontSize: "16px", color: "limegreen" }}>Пользователь успешно добавлен</span>
+                <span style={{ fontSize: "16px", color: "limegreen" }}>
+                    {type === "add"
+                        ? "Пользователь успешно добавлен"
+                        : "Пользователь успешно обновлен"}
+                </span>
             )}
 
             <Button className={s.button} onClick={handleSubmit}>
-                Сохранить
+                {type === "add" ? "Сохранить" : "Сохранить изменения"}
             </Button>
         </div>
     );

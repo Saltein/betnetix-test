@@ -1,0 +1,71 @@
+@use "../../styles/styles.scss" as *;
+
+.actionButton {
+    height: 48px;
+    padding: 0 24px;
+    border-radius: 12px;
+    background-color: $color-primary;
+
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+
+    &.mobile {
+        width: 100%;
+        height: 40px;
+
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    &.shapeless {
+        height: auto;
+        padding: 0;
+        background-color: transparent;
+        color: $color-text-3;
+
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+.backdropModal {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.containerModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialogModal {
+    display: flex;
+    padding: 60px 52px;
+    gap: 40px;
+
+    width: 565px;
+    max-width: 90vw;
+}
+
+.headerModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 40px;
+    color: $color-text-1;
+}
+
+.customClose {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+
+    cursor: pointer;
+}

@@ -76,3 +76,7 @@ export interface AddUserParams {
     email: string;
     birthDate: string;
 }
+
+export interface UpdateUserParams extends AddUserParams {
+    id: number;
+}
