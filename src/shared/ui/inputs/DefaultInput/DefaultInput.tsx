@@ -1,10 +1,10 @@
 import type { FunctionComponent } from "react";
-import { TextField, Input, Label, FieldError } from "@heroui/react";
+import { TextField, Input, Label, FieldError, DateField } from "@heroui/react";
 import s from "../Input.module.scss";
 
 interface DefaultInputProps {
     name: string;
-    type: "email" | "text" | "search" | "url" | "tel" | "password";
+    type: "email" | "text" | "search" | "url" | "tel" | "password" | "date";
     validate?: (value: string) => string | null;
     label: string;
     placeholder: string;
@@ -19,6 +19,17 @@ export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
     placeholder,
     isMobile,
 }) => {
+    if (type === "date")
+        return (
+            <DateField name={name} className={s.textField}>
+                <Label className={`${s.label}`}>{label}</Label>
+                <DateField.Input
+                    className={`${s.input} ${isMobile ? s.inputMobile : ""}`}
+                >
+                    {(segment) => <DateField.Segment segment={segment} />}
+                </DateField.Input>
+            </DateField>
+        );
     return (
         <TextField
             name={name}
@@ -26,9 +37,7 @@ export const DefaultInput: FunctionComponent<DefaultInputProps> = ({
             validate={validate ? validate : undefined}
             className={s.textField}
         >
-            <Label className={`${s.label}`}>
-                {label}
-            </Label>
+            <Label className={`${s.label}`}>{label}</Label>
             <Input
                 className={`${s.input} ${isMobile ? s.inputMobile : ""}`}
                 placeholder={placeholder}

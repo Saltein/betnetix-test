@@ -103,3 +103,32 @@
         line-height: 20px;
     }
 }
+
+.backdropModal {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.containerModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialogModal {
+    display: flex;
+    padding: 60px;
+    gap: 40px;
+    width: 565px;
+}
+
+.headerModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 40px;
+    color: $color-text-1;
+}

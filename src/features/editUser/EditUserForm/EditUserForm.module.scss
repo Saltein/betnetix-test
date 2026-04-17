@@ -1,0 +1,19 @@
+@use "../../../shared/styles/styles.scss" as *;
+
+.editFormWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+.avatarWrapper {
+    margin-bottom: 12px;
+}
+
+.button {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    background-color: $color-primary;
+}

@@ -7,7 +7,7 @@ import type { SortDirection } from "../../../shared/types";
 import type { Column } from "../../../shared/ui/DataTable/DataTable";
 import { useNavigate } from "react-router-dom";
 import LeftArrow from "../../../shared/assets/icons/leftArrow.svg?react";
-import { Button } from "@heroui/react";
+import { Button, Modal } from "@heroui/react";
 
 interface StandardPageLayoutProps {
     title: string;
@@ -32,8 +32,10 @@ interface StandardPageLayoutProps {
 
     actionButtonProps?: {};
     actionButtonLabel?: string;
-    actionButtonOnClick?: () => void;
     ActionButtonIcon?: React.ReactNode;
+
+    modalChildren?: React.ReactNode;
+    modalTitle?: string;
 }
 
 export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
@@ -50,8 +52,9 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
     searchPlaceholder,
     actionButtonProps,
     actionButtonLabel,
-    actionButtonOnClick,
     ActionButtonIcon,
+    modalChildren,
+    modalTitle,
 }) => {
     const isMobile = useMediaQuery({ maxWidth: 768 });
 
@@ -59,7 +62,9 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
 
     return (
         <div className={`${s.wrapper} ${isMobile ? s.mobile : ""}`}>
-            <div className={`${s.headerWrapperWrapper} ${isMobile ? s.mobile : ""}`}>
+            <div
+                className={`${s.headerWrapperWrapper} ${isMobile ? s.mobile : ""}`}
+            >
                 {backButtonLabel && (
                     <div
                         onClick={() => {
@@ -80,14 +85,26 @@ export const StandardPageLayout: FunctionComponent<StandardPageLayoutProps> = ({
                         <h3>{subtitle}</h3>
                     </div>
                     {actionButtonLabel && (
-                        <Button
-                            {...actionButtonProps}
-                            onClick={actionButtonOnClick}
-                            className={`${s.actionButton} ${isMobile ? s.mobile : ""}`}
-                        >
-                            {ActionButtonIcon && ActionButtonIcon}
-                            {actionButtonLabel && actionButtonLabel}
-                        </Button>
+                        <Modal>
+                            <Button
+                                {...actionButtonProps}
+                                className={`${s.actionButton} ${isMobile ? s.mobile : ""}`}
+                            >
+                                {ActionButtonIcon && ActionButtonIcon}
+                                {actionButtonLabel && actionButtonLabel}
+                            </Button>
+                            <Modal.Backdrop className={s.backdropModal}>
+                                <Modal.Container className={s.containerModal}>
+                                    <Modal.Dialog className={s.dialogModal}>
+                                        <Modal.CloseTrigger />
+                                        <Modal.Header className={s.headerModal}>
+                                            {modalTitle}
+                                        </Modal.Header>
+                                        <Modal.Body>{modalChildren}</Modal.Body>
+                                    </Modal.Dialog>
+                                </Modal.Container>
+                            </Modal.Backdrop>
+                        </Modal>
                     )}
                 </div>
 

@@ -11,6 +11,7 @@ import { useGetAllUsersPaginatedQuery } from "../../app/api/users/usersSliceApi"
 import type { Column } from "../../shared/ui/DataTable/DataTable";
 import { ProfileCell } from "../PostsPage/ProfileCell/ProfileCell";
 import PlusIcon from "../../shared/assets/icons/pluscircle.svg?react";
+import { EditUserForm } from "../../features";
 
 interface AdminsPageProps {}
 
@@ -103,10 +104,11 @@ export const AdminsPage: FunctionComponent<AdminsPageProps> = () => {
             setSearchQuery={setSearchQuery}
             searchPlaceholder="Поиск по администраторам"
             actionButtonLabel="Добавить администратора"
-            actionButtonOnClick={() => {}}
             ActionButtonIcon={
                 <PlusIcon style={{ height: "20px", width: "20px" }} />
             }
+            modalChildren={<EditUserForm />}
+            modalTitle="Добавление администратора"
         >
             {isError && <div>Произошла ошибка</div>}
 
