@@ -24,8 +24,9 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
     });
 
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
-    const isFutureDate = (dateStr: string) => {
+    const validateDate = (dateStr: string) => {
         const inputDate = new Date(dateStr);
         const now = new Date();
 
@@ -52,7 +53,7 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
             return;
         }
 
-        if (isFutureDate(formData.birthDate)) {
+        if (validateDate(formData.birthDate)) {
             setError("Некорректная дата рождения");
             return;
         }
@@ -69,6 +70,7 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
             }).unwrap();
 
             console.log("Пользователь добавлен:", result);
+            setSuccess(true);
 
             setFormData({
                 name: "",
@@ -95,6 +97,7 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
                 value={formData?.name}
                 onChange={(value: string) => {
                     setError(null);
+                    setSuccess(false);
                     setFormData({ ...formData, name: value });
                 }}
             />
@@ -107,6 +110,7 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
                 value={formData?.email}
                 onChange={(value: string) => {
                     setError(null);
+                    setSuccess(false);
                     setFormData({ ...formData, email: value });
                 }}
             />
@@ -119,12 +123,16 @@ export const EditUserForm: FunctionComponent<EditUserFormProps> = () => {
                 value={formData?.birthDate}
                 onChange={(value: string) => {
                     setError(null);
+                    setSuccess(false);
                     setFormData({ ...formData, birthDate: value });
                 }}
             />
 
             {error && (
                 <span style={{ fontSize: "16px", color: "red" }}>{error}</span>
+            )}
+            {success && (
+                <span style={{ fontSize: "16px", color: "limegreen" }}>Пользователь успешно добавлен</span>
             )}
 
             <Button className={s.button} onClick={handleSubmit}>
